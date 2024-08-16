@@ -13,7 +13,7 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
-    <!-- Scripts -->
+    <!-- Styles -->
     @vite(['resources/sass/app.scss', 'resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
@@ -76,5 +76,7 @@
             @yield('content')
         </main>
     </div>
+    <!-- Loads Flowbite for interactive UI components -->
+    <script  src =" https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js " > </script>
 </body>
 </html>
