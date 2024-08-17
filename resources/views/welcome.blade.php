@@ -18,8 +18,8 @@
         <section class="bg-white dark:bg-gray-900 flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
             <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
                 <div class="mr-auto place-self-center lg:col-span-7">
-                    <h1 class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">Easy CRM Management</h1>
-                    <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">Simplify lead tracking and customer engagement with our CRM.</p>
+                    <h1 class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-gray-400">Easy CRM Management</h1>
+                    <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-500">Simplify lead tracking and customer engagement with our CRM.</p>
                     @if (Route::has('login'))
                         @auth
                             <a href="{{ url('/home') }}" class="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
@@ -52,7 +52,7 @@
                     <img src="{{ URL::asset('/images/isometric-crm-illustration.jpg') }}" alt="isometric-crm-illustration">
                 </div>                
             </div>
-            <p><a href="https://www.freepik.com/free-vector/isometric-crm-illustration_25644134.htm#query=crm&position=4&from_view=keyword&track=ais_hybrid&uuid=9f4e76d1-dd2a-479c-9ed3-050ef8ec735b">Image by pikisuperstar on Freepik</a></p>
+            <p class="dark:text-gray-600"><a href="https://www.freepik.com/free-vector/isometric-crm-illustration_25644134.htm#query=crm&position=4&from_view=keyword&track=ais_hybrid&uuid=9f4e76d1-dd2a-479c-9ed3-050ef8ec735b">Image by pikisuperstar on Freepik</a></p>
         </section>
     </body>
 </html>

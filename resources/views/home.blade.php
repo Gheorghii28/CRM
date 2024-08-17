@@ -12,8 +12,9 @@
             </svg>
          </button>
         <a href="{{ url('/home') }}" class="flex ms-2 md:me-24">
-          <img src="{{ URL::asset('/images/management.png') }}" class="h-8 me-3" alt="CRM Logo" />
-          <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">CRM</span>
+          <img class="w-8 h-8 mr-2 dark:hidden" src="{{ URL::asset('/images/management.png') }}" alt="logo">
+          <img class="w-8 h-8 mr-2 hidden dark:block" src="{{ URL::asset('/images/management-dark-mode.png') }}" alt="logo">
+          <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-gray-400">CRM</span>
         </a>
       </div>
       <div class="flex items-center">

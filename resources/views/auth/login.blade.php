@@ -3,8 +3,9 @@
 @section('content')
 <section class="bg-gray-50 dark:bg-gray-900">
   <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-      <a href="{{ url('/') }}" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-          <img class="w-8 h-8 mr-2" src="{{ URL::asset('/images/management.png') }}" alt="logo">
+      <a href="{{ url('/') }}" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-gray-400">
+          <img class="w-8 h-8 mr-2 dark:hidden" src="{{ URL::asset('/images/management.png') }}" alt="logo">
+          <img class="w-8 h-8 mr-2 hidden dark:block" src="{{ URL::asset('/images/management-dark-mode.png') }}" alt="logo">
           CRM  
       </a>
       <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -50,7 +51,7 @@
               </form>
           </div>
       </div>
-      <p><a href="https://www.flaticon.com/free-icons/crm" title="CRM icons">CRM icons created by Iconfromus - Flaticon</a></p>
+      <p class="dark:text-gray-600"><a href="https://www.flaticon.com/free-icons/crm" title="CRM icons">CRM icons created by Iconfromus - Flaticon</a></p>
   </div>
 </section>
 @endsection
