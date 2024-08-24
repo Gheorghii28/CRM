@@ -7,6 +7,7 @@ use App\Services\DealService;
 use App\Services\EmployeeService;
 use App\Services\FinancialService;
 use App\Services\NoteService;
+use App\Services\TaskService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Services\CustomerService;
@@ -23,13 +24,14 @@ class DashboardController extends Controller
     protected $activityService;
     protected $reportService;
     protected $noteService;
+    protected $taskService;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(CustomerService $customerService, DealService $dealService, EmployeeService $employeeService, FinancialService $financialService, HelperService $helperService, ActivityService $activityService, ReportService $reportService, NoteService $noteService)
+    public function __construct(CustomerService $customerService, DealService $dealService, EmployeeService $employeeService, FinancialService $financialService, HelperService $helperService, ActivityService $activityService, ReportService $reportService, NoteService $noteService, TaskService $taskService)
     {
         $this->middleware('auth');
         $this->customerService = $customerService;
@@ -40,6 +42,7 @@ class DashboardController extends Controller
         $this->activityService = $activityService;
         $this->reportService = $reportService;
         $this->noteService = $noteService;
+        $this->taskService = $taskService;
     }
 
     /**
@@ -152,5 +155,14 @@ class DashboardController extends Controller
         $limit = $dateRange['limit'];
 
         return $this->noteService->getNotesWithDealsForPeriod($startDate, $endDate, $limit);
+    }
+
+    public function fetchTasks(Request $request) {
+                
+        $dateRange = $this->helperService->getStartAndEndDates($request);
+        $startDate = $dateRange['start_date'];
+        $endDate = $dateRange['end_date'];
+
+        return $this->taskService->getTaskInfoForPeriod($startDate, $endDate);
     }
 }
