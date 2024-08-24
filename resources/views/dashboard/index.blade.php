@@ -67,6 +67,7 @@
       updateStatistics(dateRange.startDate, dateRange.endDate, days);
       updateFinancials(dateRange.startDate, dateRange.endDate, days);
       updateActivities(dateRange.startDate, dateRange.endDate, days, 10);
+      updateReports(dateRange.startDate, dateRange.endDate, days, 10);
 
       $('#last-days-dropdown-statistics li').on('click', function(event) {
          const days = $(this).data('days');
@@ -80,6 +81,13 @@
          const dateRange = getFormattedDateRange(days);
 
          updateFinancials(dateRange.startDate, dateRange.endDate, days);
+      });
+
+      $('#last-days-dropdown-reports li').on('click', function(event) {
+         const days = $(this).data('days');
+         const dateRange = getFormattedDateRange(days);
+
+         updateReports(dateRange.startDate, dateRange.endDate, days, 10);
       });
 
       function updateStatistics(startDate, endDate, days) {
@@ -119,6 +127,26 @@
             },
             error: function(error) {
                 console.error("Error loading activities:", error);
+            }
+        }); 
+      }
+
+      function updateReports(startDate, endDate, days, limit) {
+         $.ajax({
+            url: '/dashboard/fetch-reports',
+            method: 'GET',
+            data: {
+                start_date: startDate,
+                end_date: endDate,
+                days: days,
+                limit: limit
+            },
+            dataType: 'json',
+            success: function(response) {
+               renderReports(response);
+            },
+            error: function(error) {
+                console.error("Error loading reports:", error);
             }
         }); 
       }
@@ -195,6 +223,33 @@
                   <td class="px-6 py-4">
                       ${activity.activity_description}
                   </td>
+               </tr>
+            `;
+            tableBody.append(row);
+        });
+      }
+
+      function renderReports(response) {
+        const tableBody = $('#reports-table-body');
+        tableBody.empty();
+        response.forEach(function(report) {
+            const row = `
+               <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                   <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                       ${report.Name}
+                   </th>
+                   <td class="px-6 py-4">
+                       ${report.Email}
+                   </td>
+                   <td class="px-6 py-4">
+                       ${report.Project}
+                   </td>
+                   <td class="px-6 py-4">
+                       ${formatDuration(report.Duration)}
+                   </td>
+                   <td class="px-6 py-4">
+                       ${report.Status}
+                   </td>
                </tr>
             `;
             tableBody.append(row);
@@ -335,6 +390,28 @@
       function capitalizeFirstLetter(string) {
          return string.charAt(0).toUpperCase() + string.slice(1);
       }
+
+      function formatDuration(seconds) {
+         if (seconds < 60) {
+             return `${seconds} seconds`;
+         }
+
+         if (seconds < 3600) {
+             const minutes = Math.floor(seconds / 60);
+             return `${minutes}m`;
+         }
+
+         if (seconds < 86400) {
+             const hours = Math.floor(seconds / 3600);
+             const minutes = Math.floor((seconds % 3600) / 60);
+             return `${hours}h ${minutes}m`;
+         }
+
+         const days = Math.floor(seconds / 86400);
+         const hours = Math.floor((seconds % 86400) / 3600);
+         return `${days}d ${hours}h`;
+      }
+
    });
  </script>
 @endsection

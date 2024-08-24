@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Services\CustomerService;
 use App\Services\HelperService;
+use App\Services\ReportService;
 
 class DashboardController extends Controller
 {
@@ -19,13 +20,14 @@ class DashboardController extends Controller
     protected $financialService;
     protected $helperService;
     protected $activityService;
+    protected $reportService;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(CustomerService $customerService, DealService $dealService, EmployeeService $employeeService, FinancialService $financialService, HelperService $helperService, ActivityService $activityService)
+    public function __construct(CustomerService $customerService, DealService $dealService, EmployeeService $employeeService, FinancialService $financialService, HelperService $helperService, ActivityService $activityService, ReportService $reportService)
     {
         $this->middleware('auth');
         $this->customerService = $customerService;
@@ -34,6 +36,7 @@ class DashboardController extends Controller
         $this->financialService = $financialService;
         $this->helperService = $helperService;
         $this->activityService = $activityService;
+        $this->reportService = $reportService;
     }
 
     /**
@@ -126,5 +129,15 @@ class DashboardController extends Controller
         $limit = $dateRange['limit'];
 
         return $this->activityService->getActivitiesForPeriod($startDate, $endDate, $limit);
+    }
+
+    public function fetchReports(Request $request) {
+                
+        $dateRange = $this->helperService->getStartAndEndDates($request);
+        $startDate = $dateRange['start_date'];
+        $endDate = $dateRange['end_date'];
+        $limit = $dateRange['limit'];
+
+        return $this->reportService->getReportDataForPeriod($startDate, $endDate, $limit);
     }
 }

@@ -18,6 +18,8 @@ class Report extends Model
         'user_id',
         'report_title',
         'report_content',
+        'status',
+        'duration',
         'created_at',
         'updated_at',
     ];
