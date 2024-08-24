@@ -47,7 +47,7 @@
       <div class="col-span-12">
          @include('dashboard.reports')
       </div>
-      <div class="col-span-12 xl:col-span-5">
+      <div class="col-span-12 xl:col-span-5 scrollbar-thumb-custom scrollbar-track-custom-light">
          @include('dashboard.notifications')
       </div>
       <div class="col-span-12 xl:col-span-7">
@@ -68,6 +68,7 @@
       updateFinancials(dateRange.startDate, dateRange.endDate, days);
       updateActivities(dateRange.startDate, dateRange.endDate, days, 10);
       updateReports(dateRange.startDate, dateRange.endDate, days, 10);
+      updateNotes(dateRange.startDate, dateRange.endDate, days, 10);
 
       $('#last-days-dropdown-statistics li').on('click', function(event) {
          const days = $(this).data('days');
@@ -147,6 +148,26 @@
             },
             error: function(error) {
                 console.error("Error loading reports:", error);
+            }
+        }); 
+      }
+
+      function updateNotes(startDate, endDate, days, limit) {
+         $.ajax({
+            url: '/dashboard/fetch-notes',
+            method: 'GET',
+            data: {
+                start_date: startDate,
+                end_date: endDate,
+                days: days,
+                limit: limit
+            },
+            dataType: 'json',
+            success: function(response) {
+               renderNotes(response);
+            },
+            error: function(error) {
+                console.error("Error loading notes:", error);
             }
         }); 
       }
@@ -249,6 +270,24 @@
                    </td>
                    <td class="px-6 py-4">
                        ${report.Status}
+                   </td>
+               </tr>
+            `;
+            tableBody.append(row);
+        });
+      }
+
+      function renderNotes(response) {
+        const tableBody = $('#notes-table-body');
+        tableBody.empty();
+        response.forEach(function(report) {
+            const row = `
+               <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                   <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                       ${report.deal_name}
+                   </th>
+                   <td class="px-6 py-4">
+                       ${report.note}
                    </td>
                </tr>
             `;
