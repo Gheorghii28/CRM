@@ -15,14 +15,34 @@
 
     <!-- Styles -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- Loads ApexCharts library -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    {{-- jQuery --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    
 </head>
 <body>
     <div id="app">
         <main class="dark:bg-gray-600 min-h-screen">
-            @yield('content')
+            @guest
+                @yield('content')
+            @else    
+                @include('partials/nav')
+                @include('partials/aside')
+                <div class="p-4 sm:ml-64">
+                    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+                        @yield('content')
+                    </div>
+                </div>
+            @endguest
         </main>
     </div>
+
     <!-- Loads Flowbite for interactive UI components -->
     <script  src =" https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js " > </script>
+
+    @yield('scripts')
 </body>
 </html>

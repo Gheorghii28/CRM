@@ -22,7 +22,7 @@
                     <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-500">Simplify lead tracking and customer engagement with our CRM.</p>
                     @if (Route::has('login'))
                         @auth
-                            <a href="{{ url('/home') }}" class="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
+                            <a href="{{ url('/dashboard') }}" class="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
                                 Dashboard
                             </a>
                             <a href="{{ route('logout') }}"
