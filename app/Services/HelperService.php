@@ -1,6 +1,9 @@
 <?php
 namespace App\Services;
 
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+
 class HelperService {
 
     /**
@@ -19,5 +22,32 @@ class HelperService {
         }
 
         return number_format($number, $precision);
+    }
+
+    /**
+     * Get the start and end dates for a given period.
+     *
+     * @param Request $request
+     * @return array
+     */
+    function getStartAndEndDates(Request $request)
+    {
+        $days = 7;
+        $endDate = Carbon::now();
+        $startDate = Carbon::now()->subDays($days);
+    
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $startDate = Carbon::parse($request->input('start_date'));
+            $endDate = Carbon::parse($request->input('end_date'));
+            $days = $request->input('days');
+            $limit = (int) $request->input('limit');
+        }
+    
+        return [
+            'start_date' => $startDate->startOfDay()->format('Y-m-d H:i:s'),
+            'end_date' => $endDate->endOfDay()->format('Y-m-d H:i:s'),
+            'days' => $days,
+            'limit' => $limit,
+        ];
     }
 }

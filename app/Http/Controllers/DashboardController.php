@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ActivityService;
 use App\Services\DealService;
 use App\Services\EmployeeService;
 use App\Services\FinancialService;
@@ -17,13 +18,14 @@ class DashboardController extends Controller
     protected $employeeService;
     protected $financialService;
     protected $helperService;
+    protected $activityService;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(CustomerService $customerService, DealService $dealService, EmployeeService $employeeService, FinancialService $financialService, HelperService $helperService)
+    public function __construct(CustomerService $customerService, DealService $dealService, EmployeeService $employeeService, FinancialService $financialService, HelperService $helperService, ActivityService $activityService)
     {
         $this->middleware('auth');
         $this->customerService = $customerService;
@@ -31,6 +33,7 @@ class DashboardController extends Controller
         $this->employeeService = $employeeService;
         $this->financialService = $financialService;
         $this->helperService = $helperService;
+        $this->activityService = $activityService;
     }
 
     /**
@@ -45,15 +48,10 @@ class DashboardController extends Controller
 
     public function fetchStatistics(Request $request) {
 
-         $days = 7;
-         $endDate = Carbon::now();
-         $startDate = Carbon::now()->subDays($days);
-         
-        if ($request->has('start_date') && $request->has('end_date') && $request->has('days')) {
-            $startDate = Carbon::parse($request->input('start_date'));
-            $endDate = Carbon::parse($request->input('end_date'));
-            $days = $request->input('days');
-        }
+        $dateRange = $this->helperService->getStartAndEndDates($request);
+        $startDate = $dateRange['start_date'];
+        $endDate = $dateRange['end_date'];
+        $days = $dateRange['days'];
 
         $newCustomersPerDay = $this->customerService->getNewCustomersPerDay($startDate, $endDate);
         $newTotalCustomers = $this->customerService->getNewTotalCustomers($startDate, $endDate);
@@ -98,16 +96,10 @@ class DashboardController extends Controller
     }
 
     public function fetchFinancials(Request $request) {
-        
-        $days = 7;
-        $endDate = Carbon::now();
-        $startDate = Carbon::now()->subDays($days);
-        
-       if ($request->has('start_date') && $request->has('end_date')) {
-           $startDate = Carbon::parse($request->input('start_date'));
-           $endDate = Carbon::parse($request->input('end_date'));
-           $days = $request->input('days');
-       }
+
+       $dateRange = $this->helperService->getStartAndEndDates($request);
+       $startDate = $dateRange['start_date'];
+       $endDate = $dateRange['end_date'];
 
        $receivedAmountPerDay = $this->financialService->getReceivedAmountPerDay($startDate, $endDate);
 
@@ -124,5 +116,15 @@ class DashboardController extends Controller
        ];
 
        return response()->json($data);
+    }
+
+    public function fetchActivities(Request $request) {
+                
+        $dateRange = $this->helperService->getStartAndEndDates($request);
+        $startDate = $dateRange['start_date'];
+        $endDate = $dateRange['end_date'];
+        $limit = $dateRange['limit'];
+
+        return $this->activityService->getActivitiesForPeriod($startDate, $endDate, $limit);
     }
 }

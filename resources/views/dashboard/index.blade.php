@@ -41,7 +41,7 @@
       <div class="col-span-12 xl:col-span-7">
          @include('dashboard.financials')
       </div>
-      <div class="col-span-12 xl:col-span-5">
+      <div class="col-span-12 xl:col-span-5 scrollbar-thumb-custom scrollbar-track-custom-light">
          @include('dashboard.recent-activities')
       </div>
       <div class="col-span-12">
@@ -66,6 +66,7 @@
 
       updateStatistics(dateRange.startDate, dateRange.endDate, days);
       updateFinancials(dateRange.startDate, dateRange.endDate, days);
+      updateActivities(dateRange.startDate, dateRange.endDate, days, 10);
 
       $('#last-days-dropdown-statistics li').on('click', function(event) {
          const days = $(this).data('days');
@@ -98,6 +99,26 @@
             },
             error: function(error) {
                 console.error("Error loading statistics charts:", error);
+            }
+        }); 
+      }
+
+      function updateActivities(startDate, endDate, days, limit) {
+         $.ajax({
+            url: '/dashboard/fetch-activities',
+            method: 'GET',
+            data: {
+                start_date: startDate,
+                end_date: endDate,
+                days: days,
+                limit: limit
+            },
+            dataType: 'json',
+            success: function(response) {
+               renderActivities(response);
+            },
+            error: function(error) {
+                console.error("Error loading activities:", error);
             }
         }); 
       }
@@ -159,6 +180,25 @@
          updateTrendText('#trend-customers', response.customer.trend_percentage);
          updateTrendText('#trend-deals', response.deal.trend_percentage.active_trend);
          updateTrendText('#trend-employees', response.employee.trend_percentage);
+      }
+
+      function renderActivities(response) {
+        const tableBody = $('#activity-table-body');
+        tableBody.empty();
+        response.forEach(function(activity) {
+            const activityType = capitalizeFirstLetter(activity.activity_type);
+            const row = `
+               <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      ${activityType}
+                  </th>
+                  <td class="px-6 py-4">
+                      ${activity.activity_description}
+                  </td>
+               </tr>
+            `;
+            tableBody.append(row);
+        });
       }
 
       function updateElementText(selector, newValue) {
@@ -290,6 +330,10 @@
          const currentText = element.text();
          const newText = currentText.replace(/\d+/, days);
          element.text(newText);
+      }
+
+      function capitalizeFirstLetter(string) {
+         return string.charAt(0).toUpperCase() + string.slice(1);
       }
    });
  </script>

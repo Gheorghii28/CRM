@@ -25,4 +25,5 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('/', [DashboardController::class,'index'])->name('index');
     Route::get('/fetch-statistics', [DashboardController::class,'fetchStatistics'])->name('fetch-statistics');
     Route::get('/fetch-financials', [DashboardController::class,'fetchFinancials'])->name('fetch-financials');
+    Route::get('/fetch-activities', [DashboardController::class,'fetchActivities'])->name('fetch-activities');
 });

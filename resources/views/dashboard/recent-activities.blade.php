@@ -1,7 +1,16 @@
-<div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-    <p class="text-2xl text-gray-400 dark:text-gray-500">
-       <svg class="w-3.5 h-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-       </svg>
-    </p>
+<div class="p-4 md:p-6 bg-white dark:bg-gray-800 relative overflow-x-auto shadow-md sm:rounded-lg custom-height-570px scrollbar-none overflow-y-scroll">
+   <h2 class="text-lg font-semibold text-gray-500 dark:text-gray-400 mb-4">Last Activities</h2>
+   <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+       <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+           <tr>
+               <th scope="col" class="px-6 py-3">
+                  Activity Type
+               </th>
+               <th scope="col" class="px-6 py-3">
+                  Description
+               </th>
+           </tr>
+       </thead>
+       <tbody id="activity-table-body"></tbody>
+   </table>
 </div>
