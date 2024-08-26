@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DashboardController;
@@ -29,4 +30,9 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('/fetch-reports', [DashboardController::class,'fetchReports'])->name('fetch-reports');
     Route::get('/fetch-notes', [DashboardController::class,'fetchNotes'])->name('fetch-notes');
     Route::get('/fetch-tasks', [DashboardController::class,'fetchTasks'])->name('fetch-tasks');
+});
+
+Route::prefix('customers')->name('customers.')->group(function () {
+    Route::get('/', [CustomerController::class,'index'])->name('customers');
+    Route::get('/search', [CustomerController::class,'search'])->name('search');
 });
