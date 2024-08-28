@@ -33,6 +33,10 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
 });
 
 Route::prefix('customers')->name('customers.')->group(function () {
-    Route::get('/', [CustomerController::class,'index'])->name('customers');
+    Route::get('/', [CustomerController::class,'index'])->name('index');
     Route::get('/search', [CustomerController::class,'search'])->name('search');
+    Route::get('/{customerId}/get', [CustomerController::class,'getCustomer'])->name('get-customer');
+    Route::post('/', [CustomerController::class,'store'])->name('store');
+    Route::put('/{customerId}', [CustomerController::class,'update'])->name('update');
+    Route::delete('/{customerId}', [CustomerController::class,'destroy'])->name('destroy');
 });
