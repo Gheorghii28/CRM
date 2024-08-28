@@ -18,7 +18,7 @@ class ContactFactory extends Factory
     public function definition(): array
     {
         return [
-            'customer_id' => Customer::factory(),  // Generates a customer if not provided
+            'customer_id' => Customer::inRandomOrder()->first()->id,
             'contact_name' => $this->faker->name,
             'contact_email' => $this->faker->unique()->safeEmail,
             'contact_phone' => $this->faker->phoneNumber,

@@ -20,11 +20,11 @@ class PaymentFactory extends Factory
     {
         return [
             'customer_id' => Customer::inRandomOrder()->first()->id,
-            'invoice_id' => Invoice::inRandomOrder()->first()->id,  // Erzeugt eine zufällige Rechnung
+            'invoice_id' => Invoice::factory(),  
             'amount' => $this->faker->randomFloat(2, 1000, 100000),  
-            'payment_date' => $this->faker->dateTimeBetween('-1 year', 'now'),  // Zufälliges Datum in der Vergangenheit
-            'payment_method' => $this->faker->randomElement(['Credit Card', 'Bank Transfer', 'PayPal']),  // Zufällige Zahlungsmethode
-            'status' => $this->faker->randomElement(['pending', 'completed', 'failed']),  // Zufälliger Status
+            'payment_date' => $this->faker->dateTimeBetween('-1 year', 'now'),  
+            'payment_method' => $this->faker->randomElement(['Credit Card', 'Bank Transfer', 'PayPal']),  
+            'status' => $this->faker->randomElement(['pending', 'completed', 'failed']),  
         ];
     }
 }

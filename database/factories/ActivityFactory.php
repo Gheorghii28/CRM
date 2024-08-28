@@ -19,8 +19,8 @@ class ActivityFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(), // Creates a user if not provided
-            'customer_id' => Customer::factory(), // Creates a customer if not provided
+            'user_id' => User::inRandomOrder()->first()->id, 
+            'customer_id' => Customer::inRandomOrder()->first()->id,
             'activity_type' => $this->faker->randomElement(['Call', 'Meeting', 'Email']),
             'activity_description' => $this->faker->sentence,
             'created_at' => now(),
