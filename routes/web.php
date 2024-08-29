@@ -39,4 +39,5 @@ Route::prefix('customers')->name('customers.')->group(function () {
     Route::post('/', [CustomerController::class,'store'])->name('store');
     Route::put('/{customerId}', [CustomerController::class,'update'])->name('update');
     Route::delete('/{customerId}', [CustomerController::class,'destroy'])->name('destroy');
+    Route::get('/{customerId}/profile', [CustomerController::class,'showProfile'])->name('show-profile');
 });

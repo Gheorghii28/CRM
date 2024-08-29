@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Deal;
+use App\Models\Invoice;
+use App\Models\Payment;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 class CustomerController extends Controller
 {
@@ -103,8 +107,12 @@ class CustomerController extends Controller
         try {
             $customer = Customer::findOrFail($id);
             $customer->update($validated);
+
+            $redirectRoute = $request->input('redirect_to') === 'customers.show-profile' 
+            ? route('customers.show-profile', $customer->id)
+            : route('customers.index');
     
-            return redirect()->route('customers.index')
+            return redirect($redirectRoute)
             ->with('success', "Customer {$customer->firstname} {$customer->lastname} updated successfully.");        
         } catch (\Exception $e) {
             return redirect()->route('customers.index')
@@ -137,5 +145,44 @@ class CustomerController extends Controller
       $customer = Customer::find($id);
       
       return response()->json($customer);
+    }
+
+    /**
+    * Display the specified resource.
+    */
+    public function showProfile(string $id)
+    {
+        $customer = Customer::with([
+            'contacts',        
+            'activities.user', 
+            'deals',           
+            'invoices', 
+            'payments',
+            'notes.user',      
+            'transactions'     
+        ])->findOrFail($id);
+
+        $totalDealValue = $customer->totalDealValue();
+        $outstandingBalance = $customer->outstandingBalance();
+        
+        $deals = Deal::where('customer_id', $id)->pluck('deal_value', 'created_at');
+        $payments = Payment::where('customer_id', $id)->pluck('amount', 'payment_date');
+        $invoices = Invoice::where('customer_id', $id)->pluck('total_amount', 'created_at');
+        $transactions = Transaction::where('customer_id', $id)->pluck('amount', 'transaction_date');
+
+        $formattedDeals = $deals->mapWithKeys(fn($value, $key) => [\Carbon\Carbon::parse($key)->format('Y-m-d') => $value]);
+        $formattedPayments = $payments->mapWithKeys(fn($value, $key) => [\Carbon\Carbon::parse($key)->format('Y-m-d') => $value]);
+        $formattedInvoices = $invoices->mapWithKeys(fn($value, $key) => [\Carbon\Carbon::parse($key)->format('Y-m-d') => $value]);
+        $formattedTransactions = $transactions->mapWithKeys(fn($value, $key) => [\Carbon\Carbon::parse($key)->format('Y-m-d') => $value]);
+    
+        $dates = collect(array_merge(
+            $formattedDeals->keys()->toArray(),
+            $formattedPayments->keys()->toArray(),
+            $formattedInvoices->keys()->toArray(),
+            $formattedTransactions->keys()->toArray()
+        ))->unique()->sort()->values()->toArray();
+    
+
+        return view('customers.profile', compact('customer', 'totalDealValue', 'outstandingBalance', 'formattedDeals', 'formattedPayments', 'formattedInvoices', 'formattedTransactions', 'dates'));
     }
 }

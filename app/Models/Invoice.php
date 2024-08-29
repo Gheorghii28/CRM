@@ -34,16 +34,6 @@ class Invoice extends Model
     }
 
     /**
-     * Get the payments associated with the invoice.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function payments()
-    {
-        return $this->hasMany(Payment::class);
-    }
-
-    /**
      * Scope a query to only include unpaid invoices.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query

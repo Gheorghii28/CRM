@@ -13,6 +13,9 @@
     <!-- Modal body -->
     <form id="customer-form" method="POST">
         @csrf
+        <!-- Hidden input to determine the redirect route -->
+        <input type="hidden" name="redirect_to" value="{{ request()->route()->getName() }}">
+        
         <div class="grid gap-4 mb-4 sm:grid-cols-2">
             <div>
                 <label for="first-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First name</label>
