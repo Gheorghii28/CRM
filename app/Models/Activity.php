@@ -19,6 +19,14 @@ class Activity extends Model
         'customer_id',
         'activity_type',
         'activity_description',
+        'date',
+        'status',
+        'priority',
+        'deal_id',
+        'location',
+        'outcome',
+        'notes',
+        'reminder',
     ];
 
     /**
@@ -39,5 +47,15 @@ class Activity extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    /**
+     * Get the deal associated with the activity.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function deal()
+    {
+        return $this->belongsTo(Deal::class);
     }
 }
