@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DashboardController;
@@ -53,4 +54,9 @@ Route::prefix('activities')->name('activities.')->group(function () {
     Route::post('/', [ActivityController::class,'store'])->name('store');
     Route::put('/{activityId}', [ActivityController::class,'update'])->name('update');
     Route::delete('/{activityId}', [ActivityController::class,'destroy'])->name('destroy');
+});
+
+Route::prefix('kanban')->name('kanban.')->group(function () {
+    Route::get('/', [TaskController::class,'index'])->name('index');
+    Route::post('/update-kanban', [TaskController::class,'updateKanban'])->name('update-kanban');
 });
