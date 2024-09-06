@@ -59,4 +59,9 @@ Route::prefix('activities')->name('activities.')->group(function () {
 Route::prefix('kanban')->name('kanban.')->group(function () {
     Route::get('/', [TaskController::class,'index'])->name('index');
     Route::post('/update-kanban', [TaskController::class,'updateKanban'])->name('update-kanban');
+    Route::get('/{taskId}/get', [TaskController::class,'getTask'])->name('get-task');
+    Route::get('/order', [TaskController::class,'getOrder'])->name('get-order');
+    Route::put('/{taskId}', [TaskController::class,'update'])->name('update');
+    Route::delete('/{taskId}', [TaskController::class,'destroy'])->name('destroy');
+    Route::post('/', [TaskController::class,'store'])->name('store');
 });

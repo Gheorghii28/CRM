@@ -23,6 +23,14 @@ class Task extends Model
         'due_date',
         'status',
         'order',
+    ];
+
+    /**
+     * The attributes that should be cast to date.
+     *
+     * @var array
+     */
+    protected $dates = [
         'created_at',
         'updated_at',
     ];
