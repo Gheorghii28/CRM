@@ -33,8 +33,11 @@ class ActivityController extends Controller
 
         $activities = $query->paginate(10);
         $activityTypeCounts = $this->activityService->getActivityTypeCounts();
+        $users = User::all(['id', 'name']);
+        $customers = Customer::all(['id', 'firstname', 'lastname']);
+        $deals = Deal::all(['id', 'deal_name']);
 
-        return view('activities.index', compact('activities', 'activityTypeCounts'));
+        return view('activities.index', compact('activities', 'activityTypeCounts', 'users', 'customers','deals'));
     }
 
     /**
@@ -127,33 +130,21 @@ class ActivityController extends Controller
         }
 
         $activityTypeCounts = $this->activityService->getActivityTypeCounts();
+        $users = User::all(['id', 'name']);
+        $customers = Customer::all(['id', 'firstname', 'lastname']);
+        $deals = Deal::all(['id', 'deal_name']);
 
-        return view('activities.index', compact('activities', 'search', 'activityTypeCounts'));   
+        return view('activities.index', compact('activities', 'search', 'activityTypeCounts', 'users', 'customers','deals'));   
     }
 
     public function getActivitiesForMonth($year, $month)
     {
-        // Holt alle Aktivitäten für den angegebenen Monat und Jahr
         $activities = Activity::whereYear('date', $year)
                               ->whereMonth('date', $month)
                               ->orderBy('date', 'asc')
                               ->get();
 
         return response()->json($activities);
-    }
-
-    public function getOptionsDinamically() {
-        $users = User::all(['id', 'name']);
-        $customers = Customer::all(['id', 'firstname', 'lastname']);
-        $deals = Deal::all(['id', 'deal_name']);
-
-        $options = [
-            'users' => $users,
-            'customers' => $customers,
-            'deals' => $deals,
-        ];
-        
-        return response()->json($options);
     }
 
     private function validateActivity(Request $request) 

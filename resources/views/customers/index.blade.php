@@ -49,7 +49,11 @@
             </thead>
             <tbody>
                 @foreach ($customers as $customer)
-                @include('customers.delete', ['customer->' => $customer])
+                @include('partials.delete-modal', [
+                    'entity' => $customer,
+                    'entityType' => 'customer',
+                    'entityName' => $customer['firstname'] . ' ' . $customer['lastname']
+                ])
                 <tr class="border-b dark:border-gray-700">
                     <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $customer['firstname'] }} {{ $customer['lastname'] }}</th>
                     <td class="px-4 py-3">{{ $customer['email'] }}</td>
@@ -92,103 +96,35 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
- 
-        function highlightSearchTerm(text, term) {
-            if (!term) return text;
-            var pattern = new RegExp('('+ term +')', 'gi');
-            return text.replace(pattern, '<span class="bg-yellow-300 text-black dark:bg-yellow-500 dark:text-white font-semibold rounded py-1">$1</span>');
-        }
-
         const urlParams = new URLSearchParams(window.location.search);
         const searchTerm = urlParams.get('search');
 
-        $('td, th').each(function() {
-            let text = $(this).html();
-            $(this).html(highlightSearchTerm(text, searchTerm));
+        function highlightSearchTerm(text, term) {
+            if (!term) return text;
+            const pattern = new RegExp('('+ term +')', 'gi');
+            return text.replace(pattern, '<span class="bg-yellow-300 text-black dark:bg-yellow-500 dark:text-white font-semibold rounded py-1">$1</span>');
+        }
+
+        $('td, th').contents().filter(function() {
+            return this.nodeType === Node.TEXT_NODE;
+        }).each(function() {
+            const originalText = $(this).text();
+            const highlightedText = highlightSearchTerm(originalText, searchTerm);
+            $(this).replaceWith(highlightedText);
         });
 
-        $('.open_more').on('click', function(event) {
-            const customerId = $(this).val();
-            $.ajax({
-                url: `/customers/${customerId}/get`,
-                method: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    const form = $('#customer-form');
-                    const formBtn = $('#customer-form-btn');
-
-                    form.attr('action', `/customers/${response.id}`);
-                    form.attr('method', 'POST');
-                    if ($('#customer-form input[name="_method"]').length === 0) {
-                        form.append('<input type="hidden" name="_method" value="PUT">');
-                    }
-                    formBtn.text('Save');
-
-                    resetFormFields(response);
-                },
-                error: function(error) {
-                    console.error("Error open more CRUD options:", error);
-                }
-            }); 
-        });
-
-        $('.btn-delete').on('click', function(event) {
-            const customerId = $(this).val();
-            $.ajax({
-                url: `/customers/${customerId}/get`,
-                method: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    const form = $('#customer-form-delete');
-
-                    form.attr('action', `/customers/${response.id}`);
-                    form.attr('method', 'POST');
-
-                    if (form.find('input[name="_token"]').length === 0) {
-                        const csrfToken = $('meta[name="csrf-token"]').attr('content');
-                        form.append(`<input type="hidden" name="_token" value="${csrfToken}">`);
-                    }
-
-                    if ($('#customer-form-delete input[name="_method"]').length === 0) {
-                        form.append('<input type="hidden" name="_method" value="DELETE">');
-                    }
-                },
-                error: function(error) {
-                    console.error("Error deleted:", error);
-                }
-            }); 
-        });
+        handleOpenMore('#customer-form', '#customer-form-btn', '/customers', 'customerForm');
+        handleDelete('.btn-delete', '/customers');
 
         $('#formModalButton').on('click', function(event) {
-            const form = $('#customer-form');
-            const formBtn = $('#customer-form-btn');
-
-            form.attr('action', '/customers');
-            form.attr('method', 'POST');
-            formBtn.html('<svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>Add new customer');
-            
-            $('#customer-form input[name="_method"]').remove();
-
-            resetFormFields({});
+            setupAddForm(
+                '#customer-form',
+                '#customer-form-btn',
+                '/customers',
+                '<svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>Add new customer'
+            );
+            populateFormFields('customerForm', {});
         });
-
-        function resetFormFields(fieldValues) {
-            const fields = {
-                '#first-name': fieldValues.firstname || '',
-                '#last-name': fieldValues.lastname || '',
-                '#email': fieldValues.email || '',
-                '#phone': fieldValues.phone || '',
-                '#country': fieldValues.country || '',
-                '#city': fieldValues.city || '',
-                '#street-address': fieldValues.streetaddress || '',
-                '#state-province': fieldValues.stateprovince || '',
-                '#zip': fieldValues.zip || ''
-            };
-
-            for (const [selector, value] of Object.entries(fields)) {
-                $(selector).val(value);
-            }
-        }
     });
 </script>
 @endsection

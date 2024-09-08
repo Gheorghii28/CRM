@@ -50,7 +50,6 @@ Route::prefix('activities')->name('activities.')->group(function () {
     Route::get('/{activityId}/get', [ActivityController::class,'getActivity'])->name('get-activity');
     Route::get('/{year}/{month}', [ActivityController::class,'getActivitiesForMonth'])->name('calendar');
     Route::get('/{activityId}/details', [ActivityController::class,'showDetails'])->name('show-details');
-    Route::get('/options-dinamically', [ActivityController::class,'getOptionsDinamically'])->name('options-dinamically');
     Route::post('/', [ActivityController::class,'store'])->name('store');
     Route::put('/{activityId}', [ActivityController::class,'update'])->name('update');
     Route::delete('/{activityId}', [ActivityController::class,'destroy'])->name('destroy');

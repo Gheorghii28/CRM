@@ -64,6 +64,71 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script>
     $(document).ready(function() {
+        
+        function updateKanban(itemId, newStatus, order, itemEl) {
+            $.ajax({
+                url: 'kanban/update-kanban',
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                data: {
+                    id: itemEl.data('id'),
+                    status: newStatus,
+                    order: order
+                },
+                success: function(response) {
+                    updateTaskStatus(itemEl, newStatus);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Update kanban failed:', status, error);
+                }
+            });
+        }
+
+        function updateTaskStatus(itemEl, newStatus) {
+            if (newStatus === 'done') {
+                itemEl.find('.text-violet-800').removeClass('text-violet-800').addClass('text-green-800');
+                itemEl.find('.bg-violet-200').removeClass('bg-violet-200 dark:bg-violet-300').addClass('bg-green-200 dark:bg-green-300');
+                itemEl.find('.svg-days-left').replaceWith('<svg class="w-4 h-4 text-green-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5"/></svg>');
+                itemEl.find('.flex.items-center.gap-1').html('<svg class="w-4 h-4 text-green-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5"/></svg> Done');
+            } else {
+                const dueDate = moment(itemEl.data('due-date')); 
+                const today = moment();
+                const daysLeft = dueDate.diff(today, 'days');
+                
+                itemEl.find('.text-green-800').removeClass('text-green-800').addClass('text-violet-800');
+                itemEl.find('.bg-green-200').removeClass('bg-green-200 dark:bg-green-300').addClass('bg-violet-200 dark:bg-violet-300');
+                itemEl.find('.svg-done').replaceWith('<svg class="w-4 h-4 text-violet-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>');
+                if (newStatus !== 'done') {
+                    itemEl.find('.flex.items-center.gap-1').html('<svg class="w-4 h-4 text-violet-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>' + (daysLeft > 0 ? daysLeft + ' days left' : (daysLeft === 0 ? 'Due today' : 'Overdue by ' + Math.abs(daysLeft) + ' days')));
+                }
+            }
+        }
+
+        function fetchOrderByStatus(status) {
+            $.ajax({
+                url: `/kanban/order`,
+                method: 'GET',
+                dataType: 'json',
+                data: { status: status },
+                success: function(statusOrder) {
+                    $('#order').val(statusOrder);
+                },
+                error: function(error) {
+                    console.error("Error getting order:", error);
+                }
+            });
+        }
+
+        handleOpenMore('#task-form', '#task-form-btn', '/kanban', 'taskForm');
+        handleDelete('.btn-delete', '/kanban');
+
+        $('#status').on('change', function(event) {
+            var selectedStatus = $(this).val();
+            fetchOrderByStatus(selectedStatus);
+        });
+
         @foreach(['to-do', 'in-progress', 'done'] as $status)
             $('#list-{{ $status }}').sortable({
                 group: 'shared',
@@ -72,151 +137,28 @@
                 onEnd: function (evt) {
                     const itemEl = $(evt.item);
                     const newStatus = evt.to.id.replace('list-', '');
-                    const order = [].slice.call(evt.to.children).map(function (item) {
-                        return item.dataset.id;
-                    }).filter(id => id !== undefined && id !== "");;
+                    const order = [].slice.call(evt.to.children)
+                    .map(item => item.dataset.id)
+                    .filter(id => id !== undefined && id !== "");
 
-                    $.ajax({
-                        url: 'kanban/update-kanban',
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        data: {
-                            id: itemEl.data('id'),
-                            status: newStatus,
-                            order: order
-                        },
-                        success: function(response) {
-                            if (newStatus === 'done') {
-                                itemEl.find('.text-violet-800').removeClass('text-violet-800').addClass('text-green-800');
-                                itemEl.find('.bg-violet-200').removeClass('bg-violet-200 dark:bg-violet-300').addClass('bg-green-200 dark:bg-green-300');
-                                itemEl.find('.svg-days-left').replaceWith('<svg class="w-4 h-4 text-green-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5"/></svg>');
-                                itemEl.find('.flex.items-center.gap-1').html('<svg class="w-4 h-4 text-green-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5"/></svg> Done');
-                            } else {
-                                const dueDate = moment(itemEl.data('due-date')); 
-                                const today = moment();
-                                const daysLeft = dueDate.diff(today, 'days');
-                                
-                                itemEl.find('.text-green-800').removeClass('text-green-800').addClass('text-violet-800');
-                                itemEl.find('.bg-green-200').removeClass('bg-green-200 dark:bg-green-300').addClass('bg-violet-200 dark:bg-violet-300');
-                                itemEl.find('.svg-done').replaceWith('<svg class="w-4 h-4 text-violet-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>');
-                                if (newStatus !== 'done') {
-                                    itemEl.find('.flex.items-center.gap-1').html('<svg class="w-4 h-4 text-violet-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>' + (daysLeft > 0 ? daysLeft + ' days left' : (daysLeft === 0 ? 'Due today' : 'Overdue by ' + Math.abs(daysLeft) + ' days')));
-                                }
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Update kanban failed:', status, error);
-                        }
-                    });
-
+                    updateKanban(itemEl.data('id'), newStatus, order, itemEl);
                 },
             });
-        @endforeach
 
-        $('.open_more').on('click', function(event) {
-            const taskId = $(this).val();
-            $.ajax({
-                url: `/kanban/${taskId}/get`,
-                method: 'GET',
-                dataType: 'json',
-                success: function(taskData) {
-                    const form = $('#task-form');
-                    const formBtn = $('#task-form-btn');
-
-                    form.attr('action', `/kanban/${taskData.id}`);
-                    form.attr('method', 'POST');
-                    if ($('#task-form input[name="_method"]').length === 0) {
-                        form.append('<input type="hidden" name="_method" value="PUT">');
-                    }
-                    formBtn.text('Save');
-
-                    resetFormFields(taskData);
-
-                    $('#status').on('change', function(event) {
-                        var selectedStatus = $(this).val();
-                        $.ajax({
-                            url: `/kanban/order`,
-                            method: 'GET',
-                            dataType: 'json',
-                            data: { status: selectedStatus },
-                            success: function(statusOrder) {
-                                $('#order').val(statusOrder);    
-                            },
-                            error: function(error) {
-                                console.error("Error get order:", error);
-                            }
-                        }); 
-                    });
-                },
-                error: function(error) {
-                    console.error("Error open more CRUD options:", error);
-                }
-            }); 
-        });
-
-        $('.btn-delete').on('click', function(event) {
-            const taskId = $(this).val();
-            console.log('taskId', taskId);
-            const form = $('#modal-form-delete');
-            form.attr('action', `/kanban/${taskId}`);
-            form.attr('method', 'POST');
-            if (form.find('input[name="_token"]').length === 0) {
-                const csrfToken = $('meta[name="csrf-token"]').attr('content');
-                form.append(`<input type="hidden" name="_token" value="${csrfToken}">`);
-            }
-            if ($('#modal-form-delete input[name="_method"]').length === 0) {
-                form.append('<input type="hidden" name="_method" value="DELETE">');
-            }
-        });
-
-        @foreach(['to-do', 'in-progress', 'done'] as $status)
             $('#formModalButton-{{ $status }}').on('click', function(event) {
                 const taskStatus = '{{ $status }}';
-                console.log('status', taskStatus)
-                $.ajax({
-                    url: `/kanban/order`,
-                    method: 'GET',
-                    dataType: 'json',
-                    data: { status: taskStatus },
-                    success: function(statusOrder) {
-                        $('#order').val(statusOrder);    
-                    },
-                    error: function(error) {
-                        console.error("Error get order:", error);
-                    }
-                }); 
-                const form = $('#task-form');
-                const formBtn = $('#task-form-btn');
-                const fieldsValues = {};
-
-                fieldsValues.status = '{{ $status }}';
-                form.attr('action', '/kanban');
-                form.attr('method', 'POST');
-                formBtn.html('<svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>Add new task');
-
-                $('#task-form input[name="_method"]').remove();
-                resetFormFields(fieldsValues);
+                const taskFieldValues = {};
+                taskFieldValues.status = '{{ $status }}';
+                setupAddForm(
+                    '#task-form',
+                    '#task-form-btn',
+                    '/kanban',
+                    '<svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>Add new task'
+                );
+                populateFormFields('taskForm', taskFieldValues);
+                fetchOrderByStatus(taskStatus);
             });
         @endforeach
-
-        function resetFormFields(fieldValues) {
-            const fields = {
-                '#title': fieldValues.title || '',
-                '#task_description': fieldValues.task_description || '',
-                '#due_date': fieldValues.due_date || '',
-                '#user_id': fieldValues.user_id || '',
-                '#deal_id': fieldValues.deal_id || '', 
-                '#status': fieldValues.status || 'to-do',
-                '#order' : fieldValues.order || 0,
-            };
-        
-            for (const [selector, value] of Object.entries(fields)) {
-                $(selector).val(value);
-            }
-        }
-
     })  
 </script>
 

@@ -42,6 +42,10 @@
 
     <!-- Loads Flowbite for interactive UI components -->
     <script  src =" https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js " > </script>
+    <script src="{{ asset('js/chart-options.js') }}"></script>
+    <script src="{{ asset('js/form-config.js') }}"></script>
+    <script src="{{ asset('js/helpers.js') }}"></script>
+    <script src="{{ asset('js/html-template.js') }}"></script>
 
     @yield('scripts')
 </body>
