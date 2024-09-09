@@ -21,18 +21,18 @@
         </div>
     @endif
     <div class="gap-4 lg:grid lg:grid-cols-5">
-        <div class="col-span-2 w-full h-full inline-block w-64 text-sm text-gray-500 dark:text-gray-400 flex flex-col gap-4">
+        <div class="col-span-2 w-full h-full text-sm text-gray-500 dark:text-gray-400 flex flex-col gap-4">
             <div class="p-4 h-full bg-white border border-gray-200 rounded-lg shadow-sm dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600">
               @include('activities.chart')
             </div>
         </div>
 
-        <div class="col-span-3 w-full h-full inline-block w-64 text-sm text-gray-500 dark:text-gray-400 flex flex-col gap-4">
+        <div class="col-span-3 w-full h-full text-sm text-gray-500 dark:text-gray-400 flex flex-col gap-4">
             <div class="p-3 bg-white border border-gray-200 rounded-lg shadow-sm dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600">
                 @include('activities.calendar')
             </div>
         </div>
-        <div class="col-span-5 w-full h-full inline-block w-64 text-sm text-gray-500 dark:text-gray-400 flex flex-col gap-4">
+        <div class="col-span-5 w-full h-full text-sm text-gray-500 dark:text-gray-400 flex flex-col gap-4">
             <div class=" dark:text-gray-400 ">
               @include('partials.search-form', [
                 'actionUrl' => '/activities/search',

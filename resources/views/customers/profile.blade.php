@@ -25,7 +25,7 @@
 
         <div class="gap-4 lg:grid lg:grid-cols-5">
           
-            <div class="col-span-2 w-full h-full inline-block w-64 text-sm text-gray-500 dark:text-gray-400 flex flex-col gap-4">
+            <div class="col-span-2 w-full h-full text-sm text-gray-500 dark:text-gray-400 flex flex-col gap-4">
                 <div class="p-3 bg-white border border-gray-200 rounded-lg shadow-sm dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600">
                     <div class="flex items-center justify-between mb-2">
                         <img class="w-10 h-10 rounded-full" src="{{ URL::asset('/images/user.png') }}" alt="user photo">
@@ -97,7 +97,7 @@
 
             
 
-            <div class="col-span-3 w-full h-full inline-block w-64 text-sm text-gray-500 dark:text-gray-400 flex flex-col gap-4">
+            <div class="col-span-3 w-full h-full text-sm text-gray-500 dark:text-gray-400 flex flex-col gap-4">
                 
                 <div class="p-3 bg-white border border-gray-200 rounded-lg shadow-sm dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600">
 

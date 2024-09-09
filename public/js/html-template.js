@@ -88,15 +88,23 @@ function renderEmptyDay() {
 
 function renderDay(day, dayActivities, isToday) {
     const activityIds = dayActivities.map(activity => activity.id).join(',');
-    const bgColor = isToday ? 'indigo-700' : 'gray-700';
-    const hoverColor = isToday ? 'indigo-500' : 'gray-500';
+    let dayHTML;
 
-    let dayHTML = `
-        <div class="w-full h-full">
-            <div class="flex items-center justify-center w-full rounded-full cursor-pointer">
-                <a href="/activities/search?ids=${activityIds}" role="link" tabindex="0" class="relative focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-${bgColor} focus:bg-${hoverColor} hover:bg-${hoverColor} text-base w-8 h-8 flex items-center justify-center font-medium text-white bg-${bgColor} rounded-full" data-activity-ids="${activityIds}">
-                    ${day}
-    `;
+    if(isToday) {
+        dayHTML = `
+            <div class="w-full h-full">
+                <div class="flex items-center justify-center w-full rounded-full cursor-pointer">
+                    <a href="/activities/search?ids=${activityIds}" role="link" tabindex="0" class="relative focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 focus:bg-indigo-500 hover:bg-indigo-500 text-base w-8 h-8 flex items-center justify-center font-medium text-white bg-indigo-700 rounded-full" data-activity-ids="${activityIds}">
+                        ${day}
+        `;
+    } else {
+        dayHTML = `
+            <div class="w-full h-full">
+                <div class="flex items-center justify-center w-full rounded-full cursor-pointer">
+                    <a href="/activities/search?ids=${activityIds}" role="link" tabindex="0" class="relative focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 focus:bg-gray-500 hover:bg-gray-500 text-base w-8 h-8 flex items-center justify-center font-medium text-white bg-gray-700 rounded-full" data-activity-ids="${activityIds}">
+                        ${day}
+        `;
+    }
 
     if (dayActivities.length > 0) {
         dayHTML += `

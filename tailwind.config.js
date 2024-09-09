@@ -8,6 +8,7 @@ export default {
     "./node_modules/flowbite/**/*.js",
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
     './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+    './public/js/**/*.js',
   ],
   theme: {
     extend: {

@@ -31,7 +31,7 @@
       
     </div>
 
-    <p class="text-sm pt-2 leading-4 leading-none text-gray-600 dark:text-gray-300">{{ $activity->activity_description }}</p>
+    <p class="text-sm pt-2 leading-4 text-gray-600 dark:text-gray-300">{{ $activity->activity_description }}</p>
 
     <div class="mt-4">Customer Name</div>
     <p class="text-base font-semibold leading-none text-gray-900 dark:text-white border-b pb-4 border-gray-400 border-dashed">{{ $activity->customer->firstname }} {{ $activity->customer->lastname }}</p>
