@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
+use App\Models\Note;
+use App\Models\Task;
 use App\Services\ActivityService;
 use App\Services\DealService;
 use App\Services\EmployeeService;
@@ -137,6 +140,16 @@ class DashboardController extends Controller
         return $this->activityService->getActivitiesForPeriod($startDate, $endDate, $limit);
     }
 
+    public function getLatestActivities($nr) {
+                
+        $activities = Activity::orderBy('created_at', 'desc')
+        ->select('activity_type', 'activity_description')
+        ->take($nr)
+        ->get();
+
+        return response()->json($activities);
+    }
+
     public function fetchReports(Request $request) {
                 
         $dateRange = $this->helperService->getStartAndEndDates($request);
@@ -157,6 +170,18 @@ class DashboardController extends Controller
         return $this->noteService->getNotesWithDealsForPeriod($startDate, $endDate, $limit);
     }
 
+    public function getLatestNotes($nr)
+    {
+        return Note::join('deals', 'notes.deal_id', '=', 'deals.id')
+        ->orderBy('notes.created_at', 'desc')
+        ->select(
+            'deals.deal_name as deal_name',
+            'notes.note_content as note',
+        )
+        ->take($nr)
+        ->get();
+    }
+
     public function fetchTasks(Request $request) {
                 
         $dateRange = $this->helperService->getStartAndEndDates($request);
@@ -164,5 +189,18 @@ class DashboardController extends Controller
         $endDate = $dateRange['end_date'];
 
         return $this->taskService->getTaskInfoForPeriod($startDate, $endDate);
+    }
+
+    public function getLatestTasks($nr) {
+        return Task::join('users', 'tasks.user_id', '=', 'users.id')
+        ->orderBy('tasks.created_at', 'desc') 
+        ->select(
+            'tasks.title as title',
+            'tasks.status as status',
+            'users.name as user_name',
+            'tasks.due_date as due_date'
+        )
+        ->take($nr)
+        ->get();
     }
 }

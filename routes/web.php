@@ -29,9 +29,12 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('/fetch-statistics', [DashboardController::class,'fetchStatistics'])->name('fetch-statistics');
     Route::get('/fetch-financials', [DashboardController::class,'fetchFinancials'])->name('fetch-financials');
     Route::get('/fetch-activities', [DashboardController::class,'fetchActivities'])->name('fetch-activities');
+    Route::get('/{nr}/latest-activities', [DashboardController::class,'getLatestActivities'])->name('latest-activities');
     Route::get('/fetch-reports', [DashboardController::class,'fetchReports'])->name('fetch-reports');
     Route::get('/fetch-notes', [DashboardController::class,'fetchNotes'])->name('fetch-notes');
+    Route::get('/{nr}/latest-notes', [DashboardController::class,'getLatestNotes'])->name('latest-notes');
     Route::get('/fetch-tasks', [DashboardController::class,'fetchTasks'])->name('fetch-tasks');
+    Route::get('/{nr}/latest-tasks', [DashboardController::class,'getLatestTasks'])->name('latest-tasks');
 });
 
 Route::prefix('customers')->name('customers.')->group(function () {

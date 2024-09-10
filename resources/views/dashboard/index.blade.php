@@ -66,10 +66,10 @@
 
       updateStatistics(dateRange.startDate, dateRange.endDate, days);
       updateFinancials(dateRange.startDate, dateRange.endDate, days);
-      updateActivities(dateRange.startDate, dateRange.endDate, days, 10);
+      updateActivities();
       updateReports(dateRange.startDate, dateRange.endDate, days, 10);
-      updateNotes(dateRange.startDate, dateRange.endDate, days, 10);
-      updateTasks(dateRange.startDate, dateRange.endDate, days, 10);
+      updateNotes();
+      updateTasks();
 
       $('#last-days-dropdown-statistics li').on('click', function(event) {
          const days = $(this).data('days');
@@ -113,16 +113,10 @@
         }); 
       }
 
-      function updateActivities(startDate, endDate, days, limit) {
+      function updateActivities() {
          $.ajax({
-            url: '/dashboard/fetch-activities',
+            url: '/dashboard/10/latest-activities',
             method: 'GET',
-            data: {
-                start_date: startDate,
-                end_date: endDate,
-                days: days,
-                limit: limit
-            },
             dataType: 'json',
             success: function(response) {
                renderActivities(response);
@@ -153,16 +147,10 @@
         }); 
       }
 
-      function updateNotes(startDate, endDate, days, limit) {
+      function updateNotes() {
          $.ajax({
-            url: '/dashboard/fetch-notes',
+            url: 'dashboard/10/latest-notes',
             method: 'GET',
-            data: {
-                start_date: startDate,
-                end_date: endDate,
-                days: days,
-                limit: limit
-            },
             dataType: 'json',
             success: function(response) {
                renderNotes(response);
@@ -173,16 +161,10 @@
         }); 
       }
 
-      function updateTasks(startDate, endDate, days, limit) {
+      function updateTasks() {
          $.ajax({
-            url: '/dashboard/fetch-tasks',
+            url: '/dashboard/10/latest-tasks',
             method: 'GET',
-            data: {
-                start_date: startDate,
-                end_date: endDate,
-                days: days,
-                limit: limit
-            },
             dataType: 'json',
             success: function(response) {
                renderTasks(response);
