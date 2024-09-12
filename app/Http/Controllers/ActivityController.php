@@ -62,9 +62,18 @@ class ActivityController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function showDetails(string $id)
     {
-        //
+        $activity = Activity::with(['user', 'customer', 'deal'])->find($id);
+        $users = User::all(['id', 'name']);
+        $customers = Customer::all(['id', 'firstname', 'lastname']);
+        $deals = Deal::all(['id', 'deal_name']);
+
+        if (!$activity) {
+            return redirect()->route('activities.index')->withErrors(['error' => 'Activity not found.']);
+        }
+
+        return view('activities.show-details', compact('activity', 'users', 'customers','deals'));
     }
 
     /**

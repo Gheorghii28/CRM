@@ -20,7 +20,7 @@
                     <a href="{{ url('/activities/' . $activity['id'] . '/show-details') }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Show</a>
                 </li>
                 <li>
-                    <button id="formModalButton-{{ $activity['id'] }}" data-modal-target="formModal" data-modal-toggle="formModal" type="button" value="{{ $activity['id'] }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-start">Edit</button>
+                    <button id="formModalButton-{{ $activity['id'] }}" data-modal-target="formModalActivity" data-modal-toggle="formModalActivity" type="button" value="{{ $activity['id'] }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-start">Edit</button>
                 </li>
             </ul>
             <div class="py-1">

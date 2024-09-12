@@ -42,7 +42,7 @@ Route::prefix('customers')->name('customers.')->group(function () {
     Route::get('/search', [CustomerController::class,'search'])->name('search');
     Route::get('/{customerId}/get', [CustomerController::class,'getCustomer'])->name('get-customer');
     Route::post('/', [CustomerController::class,'store'])->name('store');
-    Route::put('/{customerId}', [CustomerController::class,'update'])->name('update');
+    Route::put('/{customerId}/{activityId?}', [CustomerController::class,'update'])->name('update');
     Route::delete('/{customerId}', [CustomerController::class,'destroy'])->name('destroy');
     Route::get('/{customerId}/profile', [CustomerController::class,'showProfile'])->name('show-profile');
 });
@@ -50,9 +50,9 @@ Route::prefix('customers')->name('customers.')->group(function () {
 Route::prefix('activities')->name('activities.')->group(function () {
     Route::get('/', [ActivityController::class,'index'])->name('index');
     Route::get('/search', [ActivityController::class,'search'])->name('search');
+    Route::get('/{activityId}/show-details', [ActivityController::class,'showDetails'])->name('show-details');
     Route::get('/{activityId}/get', [ActivityController::class,'getActivity'])->name('get-activity');
     Route::get('/{year}/{month}', [ActivityController::class,'getActivitiesForMonth'])->name('calendar');
-    Route::get('/{activityId}/details', [ActivityController::class,'showDetails'])->name('show-details');
     Route::post('/', [ActivityController::class,'store'])->name('store');
     Route::put('/{activityId}', [ActivityController::class,'update'])->name('update');
     Route::delete('/{activityId}', [ActivityController::class,'destroy'])->name('destroy');

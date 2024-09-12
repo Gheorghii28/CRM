@@ -30,8 +30,8 @@
                     <div class="flex items-center justify-between mb-2">
                         <img class="w-10 h-10 rounded-full" src="{{ URL::asset('/images/user.png') }}" alt="user photo">
                         
-                        <button id="formModalButton-{{ $customer['id'] }}" data-modal-target="formModal" data-modal-toggle="formModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit</button>
-                        <div id="formModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
+                        <button id="formModalButton-{{ $customer['id'] }}" data-modal-target="formModalCustomer" data-modal-toggle="formModalCustomer" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Edit</button>
+                        <div id="formModalCustomer" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
                             <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
                                 <!-- Create content -->
                                 @include('customers/form')

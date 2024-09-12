@@ -29,7 +29,8 @@
             'placeholder' => 'Search by Name, Email, Phone, or Address...',
             'resetUrl' => '/customers',
             'buttonText' => 'Add customer',
-            'formInclude' => 'customers/form'
+            'formInclude' => 'customers/form',
+            'formModalId' => 'formModalCustomer'
         ])
     </div>
 
@@ -72,7 +73,7 @@
                                     <a href="{{ url('/customers/' . $customer['id'] . '/profile') }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Show</a>
                                 </li>
                                 <li>
-                                    <button id="formModalButton-{{ $customer['id'] }}" data-modal-target="formModal" data-modal-toggle="formModal" type="button" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-start">Edit</button>
+                                    <button id="formModalButton-{{ $customer['id'] }}" data-modal-target="formModalCustomer" data-modal-toggle="formModalCustomer" type="button" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-start">Edit</button>
                                 </li>
                             </ul>
                             <div class="py-1">

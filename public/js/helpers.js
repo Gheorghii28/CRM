@@ -13,9 +13,9 @@ function setupDeleteForm(url) {
     }
 }
 
-function setupEditForm(formSelector, formBtnSelector, url, method = 'PUT', btnText = 'Save') {
+function setupEditForm(formSelector, submitButtonSelector, url, method = 'PUT', btnText = 'Save') {
     const form = $(formSelector);
-    const formBtn = $(formBtnSelector);
+    const formBtn = $(submitButtonSelector);
 
     form.attr('action', url);
     form.attr('method', 'POST');
@@ -25,9 +25,9 @@ function setupEditForm(formSelector, formBtnSelector, url, method = 'PUT', btnTe
     }
 }
 
-function setupAddForm(formSelector, formBtnSelector, actionUrl, btnHtml) {
+function setupAddForm(formSelector, submitButtonSelector, actionUrl, btnHtml) {
     const form = $(formSelector);
-    const formBtn = $(formBtnSelector);
+    const formBtn = $(submitButtonSelector);
 
     form.attr('action', actionUrl);
     form.attr('method', 'POST');
@@ -50,23 +50,27 @@ function populateFormFields(formType, fieldValues) {
     }
 }
 
-function handleOpenMore(formSelector, formBtnSelector, baseUrl, formType) {
+function handleOpenMore(formSelector, submitButtonSelector, baseUrl, formType) {
     $('.open_more').on('click', function(event) {
         const id = $(this).val();
-        
-        setupEditForm(formSelector, formBtnSelector, `${baseUrl}/${id}`);
+        setupAndLoadFormData(formSelector, submitButtonSelector, baseUrl, id, formType);
+    });
+}
 
-        $.ajax({
-            url: `${baseUrl}/${id}/get`,
-            method: 'GET',
-            dataType: 'json',
-            success: function(fieldValues) {
-                populateFormFields(formType, fieldValues);
-            },
-            error: function(error) {
-                console.error(`Error loading ${formType} data:`, error);
-            }
-        });
+function setupAndLoadFormData(formSelector, submitButtonSelector, baseUrl, resourceId, formType, relatedId = null) {
+    const formUrl = relatedId ? `${baseUrl}/${resourceId}/${relatedId}` : `${baseUrl}/${resourceId}`;
+
+    setupEditForm(formSelector, submitButtonSelector, formUrl);
+    $.ajax({
+        url: `${baseUrl}/${resourceId}/get`,
+        method: 'GET',
+        dataType: 'json',
+        success: function(fieldValues) {
+            populateFormFields(formType, fieldValues);
+        },
+        error: function(error) {
+            console.error(`Error loading ${formType} data:`, error);
+        }
     });
 }
 

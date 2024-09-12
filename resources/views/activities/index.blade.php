@@ -39,7 +39,8 @@
                 'placeholder' => 'Search by User Name, Customer Name, Activity Type, Description, or Date...',
                 'resetUrl' => '/activities',
                 'buttonText' => 'Add activity',
-                'formInclude' => 'activities/form'
+                'formInclude' => 'activities/form',
+                'formModalId' => 'formModalActivity'
               ])
               <div class="overflow-x-auto">
                   <div class="gap-4 md:grid lg:grid xl:grid 2xl:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">

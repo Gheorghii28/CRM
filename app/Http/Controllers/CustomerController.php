@@ -100,7 +100,7 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id, $activityId = null)
     {
         $validated = $this->validateCustomer($request);
     
@@ -110,8 +110,10 @@ class CustomerController extends Controller
 
             $redirectRoute = $request->input('redirect_to') === 'customers.show-profile' 
             ? route('customers.show-profile', $customer->id)
-            : route('customers.index');
-    
+            : ($request->input('redirect_to') === 'activities.show-details' && $activityId 
+                ? route('activities.show-details', $activityId)
+                : route('customers.index'));
+
             return redirect($redirectRoute)
             ->with('success', "Customer {$customer->firstname} {$customer->lastname} updated successfully.");        
         } catch (\Exception $e) {
