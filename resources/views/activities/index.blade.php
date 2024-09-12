@@ -99,10 +99,11 @@
 
       function renderCalendar(activities, year, month) {
         const daysInMonth = new Date(year, month, 0).getDate();
-        const firstDay = new Date(year, month - 1, 1).getDay();
+        let firstDay = new Date(year, month - 1, 1).getDay();
         let currentDay = 1;
         let calendarHTML = '<table class="w-full">';
           
+        firstDay = firstDay === 0 ? 7 : firstDay;
         calendarHTML += renderWeekDaysHeader();
         calendarHTML += '<tbody>';
         
