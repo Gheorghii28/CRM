@@ -157,137 +157,32 @@
         const transactions = @json(array_values($formattedTransactions->toArray()));
         const dates = @json($dates);
 
-        setupCustomerForm(customer);
+        setupEditForm('#customer-form', '#customer-form-btn', `/customers/${customer.id}`);
+        populateFormFields('customerForm', customer);
         setupFinancialChart(deals, payments, invoices, transactions, dates);
-        
-        function setupCustomerForm(customer) {
-            const form = $('#customer-form');
-            const formBtn = $('#customer-form-btn');
-            form.attr('action', `/customers/${customer.id}`);
-            form.attr('method', 'POST');
-            if ($('#customer-form input[name="_method"]').length === 0) {
-                form.append('<input type="hidden" name="_method" value="PUT">');
-            }
-            formBtn.text('Save');
-            resetFormFields(customer);
-        }
 
         function setupFinancialChart(deals, payments, invoices, transactions, dates) {
-            const options = {
-                grid: {
-                    show: true,
-                    strokeDashArray: 4,
-                    padding: {
-                        left: 2,
-                        right: 2,
-                        top: -26
-                    },
-                },
-                series: [
-                    {
-                        name: "Total Deal Value",
-                        data: deals,
-                        color: "#1A56DB",
-                    },
-                    {
-                        name: "Payments",
-                        data: payments,
-                        color: "#7E3BF2",
-                    },
-                    {
-                        name: "Invoices",
-                        data: invoices,
-                        color: "#10B981",
-                    },
-                    {
-                        name: "Transactions",
-                        data: transactions,
-                        color: "#F97316",
-                    },
-                ],
-                chart: {
-                    height: "100%",
-                    maxWidth: "100%",
-                    type: "area",
-                    fontFamily: "Inter, sans-serif",
-                    dropShadow: {
-                        enabled: false,
-                    },
-                    toolbar: {
-                        show: false,
-                    },
-                },
-                tooltip: {
-                    enabled: true,
-                    x: {
-                        show: true,
-                    },
-                },
+            const seriesData = [
+                { name: "Total Deal Value", data: deals },
+                { name: "Payments", data: payments },
+                { name: "Invoices", data: invoices },
+                { name: "Transactions", data: transactions },
+            ];
+            const chartConfig = {
+                height: "100%",
+                colors: ["#1A56DB", "#7E3BF2", "#10B981", "#F97316"],
+                yAxisFormatter: (value) => value ? `$${value}` : '$0',
                 legend: {
                     show: true,
                     position: 'top',
                     horizontalAlign: 'right',
-                },
-                fill: {
-                    type: "gradient",
-                    gradient: {
-                        opacityFrom: 0.55,
-                        opacityTo: 0,
-                        shade: "light",
-                        gradientToColors: ["#1C64F2", "#7E3BF2", "#10B981", "#F97316"],
-                    },
-                },
-                dataLabels: {
-                    enabled: false,
-                },
-                stroke: {
-                    width: 2,
-                },
-                xaxis: {
-                    categories: dates,
-                    labels: {
-                        show: true,
-                    },
-                    axisBorder: {
-                        show: false,
-                    },
-                    axisTicks: {
-                        show: false,
-                    },
-                },
-                yaxis: {
-                    labels: {
-                        formatter: function (value) {
-                            if (value) {
-                                return '$' + value;
-                            }
-                            return '$' + 0;
-                        }
-                    }
-                },
-            }
+                }
+            };
+            const options = getAreaChartOptions(seriesData, dates, chartConfig);
 
             if ($("#grid-chart").length && typeof ApexCharts !== 'undefined') {
                 const chart = new ApexCharts(document.getElementById("grid-chart"), options);
                 chart.render();
-            }
-        }
-
-        function resetFormFields(fieldValues) {
-            const fields = {
-                '#first-name': fieldValues.firstname || '',
-                '#last-name': fieldValues.lastname || '',
-                '#email': fieldValues.email || '',
-                '#phone': fieldValues.phone || '',
-                '#country': fieldValues.country || '',
-                '#city': fieldValues.city || '',
-                '#street-address': fieldValues.streetaddress || '',
-                '#state-province': fieldValues.stateprovince || '',
-                '#zip': fieldValues.zip || ''
-            };
-
-            for (const [selector, value] of Object.entries(fields)) {
-                $(selector).val(value);
             }
         }
     });

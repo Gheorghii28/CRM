@@ -120,19 +120,17 @@ function getAreaChartOptions(seriesData, labelsData, config = {}) {
             },
         },
         dataLabels: { enabled: false },
-        stroke: { width: 6 },
+        stroke: { width: 4 },
         grid: {
             show: finalConfig.showGrid,
             strokeDashArray: 4,
             padding: { left: 2, right: 2, top: -26 },
         },
-        series: [
-            {
-                name: finalConfig.seriesName,
-                data: seriesData,
-                color: finalConfig.colors[0],
-            },
-        ],
+        series: seriesData.map((item, index) => ({
+            name: item.name || finalConfig.seriesName,
+            data: item.data,
+            color: finalConfig.colors[index] || finalConfig.colors[0],
+        })),
         xaxis: {
             categories: labelsData,
             labels: {
@@ -152,6 +150,7 @@ function getAreaChartOptions(seriesData, labelsData, config = {}) {
                     fontFamily: finalConfig.fontFamily,
                     cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400',
                 },
+                formatter: finalConfig.yAxisFormatter || null,
             },
         },
     };

@@ -192,6 +192,7 @@
                    colors: ["#7E3BF2", "#1A56DB"],
                    show: true,
                    height: 340,
+                   yAxisFormatter: (value) => value ? `$${value}` : '$0',
                });
                updateElementText('#received-amount', response.total_received_for_period);
                updateElementText('#due-amount', response.total_due_for_period);
@@ -274,7 +275,9 @@
       }
 
       function renderAreaChart(response, chartElement, options) {
-         const seriesData = response.total_per_day;
+         const seriesData = [
+                { name: options.seriesNames[0], data: response.total_per_day }
+         ];
          const labelsData = response.date_per_day;
          const chartOptions = getAreaChartOptions(seriesData, labelsData, options);
 
