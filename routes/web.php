@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\InboxController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -66,4 +67,8 @@ Route::prefix('kanban')->name('kanban.')->group(function () {
     Route::put('/{taskId}', [TaskController::class,'update'])->name('update');
     Route::delete('/{taskId}', [TaskController::class,'destroy'])->name('destroy');
     Route::post('/', [TaskController::class,'store'])->name('store');
+});
+
+Route::prefix('inbox')->name('inbox.')->group(function () {
+    Route::get('/', [InboxController::class,'index'])->name('index');
 });

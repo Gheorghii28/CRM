@@ -43,4 +43,36 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Get all tasks associated with the user.
+     */
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
+
+    /**
+     * Get all reports created by the user.
+     */
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
+    }
+
+    /**
+     * Get all notes created by the user.
+     */
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
+    }
+
+    /**
+     * Get all activities assigned to the user.
+     */
+    public function activities()
+    {
+        return $this->hasMany(Activity::class);
+    }
 }
