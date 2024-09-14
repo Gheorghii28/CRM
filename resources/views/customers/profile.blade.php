@@ -61,11 +61,11 @@
                         <ul class="list-group">
                             @foreach($customer->contacts as $contact)
                                 <li class="list-group-item">
-                                    <a class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white rounded-md" href="{{ url('/contacts/' . $contact['id'] . '/profile') }}">
+                                    <div class="block py-2 px-4 bg-gray-100 dark:bg-gray-600 dark:text-white rounded-md mb-2">
                                         <strong>Name:</strong> {{ $contact->contact_name }} <br>
                                         <strong>Email:</strong> {{ $contact->contact_email }} <br>
                                         <strong>Phone:</strong> {{ $contact->contact_phone }}
-                                    </a>
+                                    </div>
                                 </li>
                             @endforeach
                         </ul>
@@ -82,7 +82,7 @@
                         <ul class="list-group">
                             @foreach($customer->activities as $activity)
                                 <li class="list-group-item">
-                                    <a class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white rounded-md" href="{{ url('/activities/' . $activity['id'] . '/details') }}">
+                                    <a class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white rounded-md" href="{{ url('/activities/' . $activity['id'] . '/show-details') }}">
                                         <strong>Activity:</strong> {{ $activity->activity_type }} <br>
                                         <strong>Description:</strong> {{ $activity->activity_description }} <br>
                                         <strong>Employee Responsible:</strong> {{ $activity->user->name }} <br>
@@ -126,14 +126,14 @@
                         <ul class="list-group">
                             @foreach($customer->notes as $note)
                                 <li class="list-group-item">
-                                    <a class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white rounded-md" href="{{ url('/notes/' . $note['id'] . '/details') }}">
+                                    <div class="block py-2 px-4 bg-gray-100 dark:bg-gray-600 dark:text-white rounded-md mb-2">
                                         <strong>{{ $note->note_content }}</strong><br>
                                         <small>Created by {{ $note->user->name }} on {{ $note->created_at->format('d M Y') }}</small>
                                         @if($note->deal)
                                             <br>
                                             <small>Related to Deal: {{ $note->deal->deal_name }} (Value: ${{ number_format($note->deal->deal_value, 2) }})</small>
                                         @endif
-                                    </a>
+                                    </div>
                                 </li>
                             @endforeach
                         </ul>
