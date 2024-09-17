@@ -7,6 +7,7 @@ use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LanguageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,4 +72,8 @@ Route::prefix('kanban')->name('kanban.')->group(function () {
 
 Route::prefix('inbox')->name('inbox.')->group(function () {
     Route::get('/', [InboxController::class,'index'])->name('index');
+});
+
+Route::prefix('language')->name('language.')->group(function () {
+    Route::post('/switch', [LanguageController::class,'switch'])->name('switch');
 });
