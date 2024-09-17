@@ -13,7 +13,7 @@ function setupDeleteForm(url) {
     }
 }
 
-function setupEditForm(formSelector, submitButtonSelector, url, method = 'PUT', btnText = 'Save') {
+function setupEditForm(formSelector, submitButtonSelector, url, btnText, method = 'PUT') {
     const form = $(formSelector);
     const formBtn = $(submitButtonSelector);
 
@@ -50,17 +50,7 @@ function populateFormFields(formType, fieldValues) {
     }
 }
 
-function handleOpenMore(formSelector, submitButtonSelector, baseUrl, formType) {
-    $('.open_more').on('click', function(event) {
-        const id = $(this).val();
-        setupAndLoadFormData(formSelector, submitButtonSelector, baseUrl, id, formType);
-    });
-}
-
-function setupAndLoadFormData(formSelector, submitButtonSelector, baseUrl, resourceId, formType, relatedId = null) {
-    const formUrl = relatedId ? `${baseUrl}/${resourceId}/${relatedId}` : `${baseUrl}/${resourceId}`;
-
-    setupEditForm(formSelector, submitButtonSelector, formUrl);
+function loadFormData(baseUrl, resourceId, formType) {
     $.ajax({
         url: `${baseUrl}/${resourceId}/get`,
         method: 'GET',

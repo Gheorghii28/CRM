@@ -17,14 +17,14 @@
         <div id="dropdown-{{ $activity['id'] }}" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
             <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-button-{{ $activity['id'] }}">
                 <li>
-                    <a href="{{ url('/activities/' . $activity['id'] . '/show-details') }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Show</a>
+                    <a href="{{ url('/activities/' . $activity['id'] . '/show-details') }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ __('messages.show') }}</a>
                 </li>
                 <li>
-                    <button id="formModalButton-{{ $activity['id'] }}" data-modal-target="formModalActivity" data-modal-toggle="formModalActivity" type="button" value="{{ $activity['id'] }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-start">Edit</button>
+                    <button id="formModalButton-{{ $activity['id'] }}" data-modal-target="formModalActivity" data-modal-toggle="formModalActivity" type="button" value="{{ $activity['id'] }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-start">{{ __('messages.edit') }}</button>
                 </li>
             </ul>
             <div class="py-1">
-                <button data-modal-target="popup-modal-{{ $activity['id'] }}" data-modal-toggle="popup-modal-{{ $activity['id'] }}" value="{{ $activity['id'] }}" type="button" class="btn-delete block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-start">Delete</button> 
+                <button data-modal-target="popup-modal-{{ $activity['id'] }}" data-modal-toggle="popup-modal-{{ $activity['id'] }}" value="{{ $activity['id'] }}" type="button" class="btn-delete block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-start">{{ __('messages.delete') }}</button> 
             </div>
         </div>
         
@@ -33,10 +33,10 @@
 
     <p class="text-sm pt-2 leading-4 text-gray-600 dark:text-gray-300">{{ $activity->activity_description }}</p>
 
-    <div class="mt-4">Customer Name</div>
+    <div class="mt-4">{{ __('messages.customer_name') }}</div>
     <p class="text-base font-semibold leading-none text-gray-900 dark:text-white border-b pb-4 border-gray-400 border-dashed">{{ $activity->customer->firstname }} {{ $activity->customer->lastname }}</p>
                     
-    <div class="">Priority</div>
+    <div class="">{{ __('messages.priority') }}</div>
     @php
       $priorityClass = 'text-gray-900';
       switch($activity->priority) {
@@ -51,5 +51,5 @@
               break;
       }
     @endphp
-    <p class="text-base font-semibold leading-none {{ $priorityClass }}">{{ ucfirst($activity['priority']) }}</p>
+    <p class="text-base font-semibold leading-none {{ $priorityClass }}">{{ __('messages.' . $activity['priority'] . '_priority') }}</p>
 </div>

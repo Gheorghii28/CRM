@@ -91,7 +91,7 @@
                 itemEl.find('.text-violet-800').removeClass('text-violet-800').addClass('text-green-800');
                 itemEl.find('.bg-violet-200').removeClass('bg-violet-200 dark:bg-violet-300').addClass('bg-green-200 dark:bg-green-300');
                 itemEl.find('.svg-days-left').replaceWith('<svg class="w-4 h-4 text-green-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5"/></svg>');
-                itemEl.find('.flex.items-center.gap-1').html('<svg class="w-4 h-4 text-green-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5"/></svg> Done');
+                itemEl.find('.flex.items-center.gap-1').html('<svg class="w-4 h-4 text-green-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5"/></svg>{{ __('messages.done') }}');
             } else {
                 const dueDate = moment(itemEl.data('due-date')); 
                 const today = moment();
@@ -101,7 +101,7 @@
                 itemEl.find('.bg-green-200').removeClass('bg-green-200 dark:bg-green-300').addClass('bg-violet-200 dark:bg-violet-300');
                 itemEl.find('.svg-done').replaceWith('<svg class="w-4 h-4 text-violet-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>');
                 if (newStatus !== 'done') {
-                    itemEl.find('.flex.items-center.gap-1').html('<svg class="w-4 h-4 text-violet-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>' + (daysLeft > 0 ? daysLeft + ' days left' : (daysLeft === 0 ? 'Due today' : 'Overdue by ' + Math.abs(daysLeft) + ' days')));
+                    itemEl.find('.flex.items-center.gap-1').html('<svg class="w-4 h-4 text-violet-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>' + (daysLeft > 0 ? daysLeft + ' {{ __('messages.days_left') }}' : (daysLeft === 0 ? '{{ __('messages.due_today') }}' : '{{ __('messages.overdue') }} ' + Math.abs(daysLeft) + ' {{ __('messages.days') }}')));
                 }
             }
         }
@@ -121,7 +121,12 @@
             });
         }
 
-        handleOpenMore('#task-form', '#task-form-btn', '/kanban', 'taskForm');
+        $('.open_more').on('click', function(event) {
+            const id = $(this).val();              
+            const btnText = "{{ __('messages.save') }}";
+            setupEditForm('#task-form', '#task-form-btn', `/kanban/${id}`, btnText);
+            loadFormData('/kanban', id, 'taskForm');
+        });
         handleDelete('.btn-delete', '/kanban');
 
         $('#status').on('change', function(event) {
@@ -153,7 +158,7 @@
                     '#task-form',
                     '#task-form-btn',
                     '/kanban',
-                    '<svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>Add new task'
+                    '<svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>{{ __('messages.add_new_task') }}'
                 );
                 populateFormFields('taskForm', taskFieldValues);
                 fetchOrderByStatus(taskStatus);

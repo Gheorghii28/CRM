@@ -26,9 +26,9 @@
     <div class="px-4">
         @include('partials.search-form', [
             'actionUrl' => '/customers/search',
-            'placeholder' => 'Search by Name, Email, Phone, or Address...',
+            'placeholder' => __('messages.search_placeholder'),
             'resetUrl' => '/customers',
-            'buttonText' => 'Add customer',
+            'buttonText' => __('messages.add_customer'),
             'formInclude' => 'customers/form',
             'formModalId' => 'formModalCustomer'
         ])
@@ -38,13 +38,13 @@
         <table id="customer-table-body" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                    <th scope="col" class="px-4 py-3">Customer Name</th>
-                    <th scope="col" class="px-4 py-3">Email</th>
-                    <th scope="col" class="px-4 py-3">Phone</th>
-                    <th scope="col" class="px-4 py-3">Address</th>
-                    <th scope="col" class="px-4 py-3">Start of Relationship</th>
+                    <th scope="col" class="px-4 py-3">{{ __('messages.customer_name') }}</th>
+                    <th scope="col" class="px-4 py-3">{{ __('messages.email') }}</th>
+                    <th scope="col" class="px-4 py-3">{{ __('messages.phone') }}</th>
+                    <th scope="col" class="px-4 py-3">{{ __('messages.address') }}</th>
+                    <th scope="col" class="px-4 py-3">{{ __('messages.start_relationship') }}</th>
                     <th scope="col" class="px-4 py-3">
-                        <span class="sr-only">Actions</span>
+                        <span class="sr-only">{{ __('messages.actions') }}</span>
                     </th>
                 </tr>
             </thead>
@@ -70,14 +70,14 @@
                         <div id="dropdown-{{ $customer['id'] }}" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                             <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-button-{{ $customer['id'] }}">
                                 <li>
-                                    <a href="{{ url('/customers/' . $customer['id'] . '/profile') }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Show</a>
+                                    <a href="{{ url('/customers/' . $customer['id'] . '/profile') }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ __('messages.show') }}</a>
                                 </li>
                                 <li>
-                                    <button id="formModalButton-{{ $customer['id'] }}" data-modal-target="formModalCustomer" data-modal-toggle="formModalCustomer" type="button" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-start">Edit</button>
+                                    <button id="formModalButton-{{ $customer['id'] }}" data-modal-target="formModalCustomer" data-modal-toggle="formModalCustomer" type="button" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-start">{{ __('messages.edit') }}</button>
                                 </li>
                             </ul>
                             <div class="py-1">
-                                <button data-modal-target="popup-modal-{{ $customer['id'] }}" data-modal-toggle="popup-modal-{{ $customer['id'] }}" value="{{ $customer['id'] }}" type="button" class="btn-delete block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-start">Delete</button> 
+                                <button data-modal-target="popup-modal-{{ $customer['id'] }}" data-modal-toggle="popup-modal-{{ $customer['id'] }}" value="{{ $customer['id'] }}" type="button" class="btn-delete block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-start">{{ __('messages.delete') }}</button> 
                             </div>
                         </div>
                     </td>
@@ -114,7 +114,12 @@
             $(this).replaceWith(highlightedText);
         });
 
-        handleOpenMore('#customer-form', '#customer-form-btn', '/customers', 'customerForm');
+        $('.open_more').on('click', function(event) {
+            const id = $(this).val();
+            const btnText = "{{ __('messages.save') }}";
+            setupEditForm('#customer-form', '#customer-form-btn', `/customers/${id}`, btnText);
+            loadFormData('/customers', id, 'customerForm');
+        });
         handleDelete('.btn-delete', '/customers');
 
         $('#formModalButton').on('click', function(event) {
@@ -122,7 +127,7 @@
                 '#customer-form',
                 '#customer-form-btn',
                 '/customers',
-                '<svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>Add new customer'
+                '<svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>{{ __('messages.add_new_customer') }}'
             );
             populateFormFields('customerForm', {});
         });

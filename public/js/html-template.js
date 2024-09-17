@@ -73,8 +73,7 @@ function createTaskRow(task) {
     `;
 }
 
-function renderWeekDaysHeader() {
-    const weekDays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+function renderWeekDaysHeader(weekDays) {  
     return `
         <thead>
             <tr>${weekDays.map(day => `<th><div class="w-full flex justify-center"><p class="text-base font-medium text-center text-gray-800 dark:text-gray-100">${day}</p></div></th>`).join('')}</tr>

@@ -5,7 +5,7 @@
    <div class="mb-8 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
       <div>
          <h2 id="overview-title" class="text-title-sm2 font-bold  text-gray-500 dark:text-gray-400">
-            Last 7 Days Overview
+            {{ __('messages.last_7_days_overview') }}
          </h2>
       </div>
       <button
@@ -14,7 +14,7 @@
          data-dropdown-placement="bottom"
          class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 text-center inline-flex items-center dark:hover:text-white"
          type="button">
-         Last 7 days
+         {{ __('messages.last_7_days') }}
          <svg class="w-2.5 m-2.5 ms-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
          </svg>
@@ -22,13 +22,13 @@
       <div id="last-days-dropdown-statistics" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
          <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-default-btn-statistics">
             <li class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer" data-days="7">
-               Last 7 days
+               {{ __('messages.last_7_days') }}
             </li>
             <li class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer" data-days="30">
-               Last 30 days
+               {{ __('messages.last_30_days') }}
             </li>
             <li class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer" data-days="90">
-               Last 90 days
+               {{ __('messages.last_90_days') }}
             </li>
          </ul>
       </div>

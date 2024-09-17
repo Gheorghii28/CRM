@@ -36,9 +36,9 @@
             <div class=" dark:text-gray-400 ">
               @include('partials.search-form', [
                 'actionUrl' => '/activities/search',
-                'placeholder' => 'Search by User Name, Customer Name, Activity Type, Description, or Date...',
+                'placeholder' => __('messages.search_activity_placeholder'),
                 'resetUrl' => '/activities',
-                'buttonText' => 'Add activity',
+                'buttonText' => __('messages.add_activity_button'),
                 'formInclude' => 'activities/form',
                 'formModalId' => 'formModalActivity'
               ])
@@ -67,6 +67,29 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
+      const monthNames = [
+          "{{ __('messages.months.january') }}",
+          "{{ __('messages.months.february') }}",
+          "{{ __('messages.months.march') }}",
+          "{{ __('messages.months.april') }}",
+          "{{ __('messages.months.may') }}",
+          "{{ __('messages.months.june') }}",
+          "{{ __('messages.months.july') }}",
+          "{{ __('messages.months.august') }}",
+          "{{ __('messages.months.september') }}",
+          "{{ __('messages.months.october') }}",
+          "{{ __('messages.months.november') }}",
+          "{{ __('messages.months.december') }}"
+      ];
+      const weekDays = [
+        "{{ __('messages.weekdays.monday') }}",
+        "{{ __('messages.weekdays.tuesday') }}",
+        "{{ __('messages.weekdays.wednesday') }}",
+        "{{ __('messages.weekdays.thursday') }}",
+        "{{ __('messages.weekdays.friday') }}",
+        "{{ __('messages.weekdays.saturday') }}",
+        "{{ __('messages.weekdays.sunday') }}"
+      ];  
       let currentYear = new Date().getFullYear();
       let currentMonth = new Date().getMonth() + 1;
 
@@ -74,7 +97,7 @@
         const activityTypeCounts = @json($activityTypeCounts);
         const seriesData = activityTypeCounts.map(item => item.count);
         const labelsData = activityTypeCounts.map(item => item.activity_type);
-        const customOptions = { totalLabel: "Total Activities" };
+        const customOptions = { totalLabel: "{{ __('messages.total_activities') }}" };
 
         if ($("#donut-chart").length && typeof ApexCharts !== 'undefined') {
           const chartOptions = getDonutChartOptions(seriesData, labelsData, customOptions);
@@ -104,7 +127,7 @@
         let calendarHTML = '<table class="w-full">';
           
         firstDay = firstDay === 0 ? 7 : firstDay;
-        calendarHTML += renderWeekDaysHeader();
+        calendarHTML += renderWeekDaysHeader(weekDays);
         calendarHTML += '<tbody>';
         
         for (let week = 0; week < 6; week++) { 
@@ -143,10 +166,6 @@
       }
 
       function updateMonthYearDisplay(year, month) {
-        const monthNames = [
-            "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-        ];
         const monthYearText = monthNames[month - 1] + ' ' + year;
 
         $('#currentMonthYear').text(monthYearText);
@@ -163,7 +182,12 @@
           changeMonth(-1);
       });
 
-      handleOpenMore('#activity-form', '#activity-form-btn', '/activities', 'activityForm');
+      $('.open_more').on('click', function(event) {
+        const id = $(this).val();
+        const btnText = "{{ __('messages.save') }}";
+        setupEditForm('#activity-form', '#activity-form-btn', `/activities/${id}`, btnText);
+        loadFormData('/activities', id, 'activityForm');
+      });
       handleDelete('.btn-delete', '/activities');
 
       $('#formModalButton').on('click', function(event) {
@@ -171,7 +195,7 @@
           '#activity-form',
           '#activity-form-btn',
           '/activities',
-          '<svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>Add new activity'
+          '<svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>{{ __('messages.add_new_activity') }}'
         );
         populateFormFields('activityForm', {});
       });

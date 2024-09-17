@@ -3,7 +3,7 @@
     <div class="flex justify-between items-start">
         <h5 class="mb-4 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">{{ $task->title }}</h5>
         <button id="dropdownButton-{{ $task->id }}" data-dropdown-toggle="dropdown-{{ $task->id }}" value="{{ $task['id'] }}" class="open_more inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
-            <span class="sr-only">Open dropdown</span>
+            <span class="sr-only">{{ __('messages.open_dropdown') }}</span>
             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
                 <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
             </svg>
@@ -12,10 +12,10 @@
         <div id="dropdown-{{ $task->id }}" class="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
             <ul class="py-2" aria-labelledby="dropdownButton">
                 <li>
-                    <button id="formModalButton-{{ $task['id'] }}" data-modal-target="formModal" data-modal-toggle="formModal" type="button" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white w-full text-start">Edit</button>
+                    <button id="formModalButton-{{ $task['id'] }}" data-modal-target="formModal" data-modal-toggle="formModal" type="button" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white w-full text-start">{{ __('messages.edit') }}</button>
                 </li>
                 <li>
-                    <button data-modal-target="popup-modal-{{ $task['id'] }}" data-modal-toggle="popup-modal-{{ $task['id'] }}" value="{{ $task['id'] }}" type="button" class="btn-delete block py-2 px-4 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white w-full text-start">Delete</button> 
+                    <button data-modal-target="popup-modal-{{ $task['id'] }}" data-modal-toggle="popup-modal-{{ $task['id'] }}" value="{{ $task['id'] }}" type="button" class="btn-delete block py-2 px-4 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white w-full text-start">{{ __('messages.delete') }}</button>
                 </li>
             </ul>
         </div>
@@ -31,11 +31,11 @@
         </button>
         <div data-popover id="popover-description-{{ $task->id }}" role="tooltip" class="absolute z-10 invisible inline-block text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 w-72 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400">
             <div class="p-3 space-y-2">
-                <h3 class="font-semibold text-gray-900 dark:text-white">Assigned Employee:</h3>
+                <h3 class="font-semibold text-gray-900 dark:text-white">{{ __('messages.assigned_employee') }}:</h3>
                 <p>{{ $task->user->name }}</p>
-                <h3 class="font-semibold text-gray-900 dark:text-white">Related Deal:</h3>
+                <h3 class="font-semibold text-gray-900 dark:text-white">{{ __('messages.related_deal') }}:</h3>
                 <p>{{ $task->deal->deal_name }}</p>
-                <h3 class="font-semibold text-gray-900 dark:text-white">Customer:</h3>
+                <h3 class="font-semibold text-gray-900 dark:text-white">{{ __('messages.customer') }}:</h3>
                 <p>{{ $task->deal->customer->firstname }} {{ $task->deal->customer->lastname }}</p>
             </div>
             <div data-popper-arrow></div>
@@ -53,17 +53,17 @@
                 <svg class="svg-done w-4 h-4 text-green-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5"/>
                 </svg>
-                Done
+                {{ __('messages.done') }}
             @else
                 <svg class="svg-days-left w-4 h-4 text-violet-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
                 </svg>
                 @if($daysLeft > 0)
-                    {{ $daysLeft }} days left
+                    {{ $daysLeft }} {{ __('messages.days_left') }}
                 @elseif($daysLeft === 0)
-                    Due today
+                    {{ __('messages.due_today') }}
                 @else
-                    Overdue by {{ abs($daysLeft) }} days
+                    {{ __('messages.overdue_by') }} {{ abs($daysLeft) }} {{ __('messages.days') }}
                 @endif
             @endif
         </div>
