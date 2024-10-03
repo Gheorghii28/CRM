@@ -17,13 +17,28 @@ class ContactFactory extends Factory
      */
     public function definition(): array
     {
+        $customer = Customer::inRandomOrder()->first() ?? Customer::factory()->create();
+        $customerCreatedAt = $customer->created_at;
+        $createdAt = $this->faker->dateTimeBetween($customerCreatedAt, 'now');
+
+        $jobTitles = [
+            'Sales Manager', 'Marketing Director', 'Customer Support Lead', 
+            'Business Development Manager', 'IT Consultant', 'Operations Director'
+        ];
+
+        $companies = [
+            'Acme Corp', 'GlobalTech Solutions', 'InnovateX', 'Skyline Enterprises', 'BlueWave Consulting'
+        ];
+
         return [
-            'customer_id' => Customer::inRandomOrder()->first()->id,
+            'customer_id' => $customer->id,
             'contact_name' => $this->faker->name,
             'contact_email' => $this->faker->unique()->safeEmail,
             'contact_phone' => $this->faker->phoneNumber,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'job_title' => $this->faker->randomElement($jobTitles),
+            'company' => $this->faker->randomElement($companies),
+            'created_at' => $createdAt,
+            'updated_at' => $this->faker->dateTimeBetween($createdAt, 'now'),
         ];
     }
 }

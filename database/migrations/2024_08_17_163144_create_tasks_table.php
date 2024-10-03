@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('deal_id')->nullable()->constrained('deals')->onDelete('cascade');
-            $table->text('task_description');
+            $table->string('title', 255)->nullable()->collation('utf8mb4_unicode_ci');
+            $table->text('task_description')->collation('utf8mb4_unicode_ci');
             $table->date('due_date')->nullable();
-            $table->enum('status', ['pending', 'completed'])->default('pending');
+            $table->enum('status', ['to-do', 'in-progress', 'done'])->collation('utf8mb4_unicode_ci')->default('to-do');
+            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }

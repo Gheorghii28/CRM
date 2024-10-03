@@ -15,8 +15,16 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
-            $table->enum('activity_type', ['call', 'meeting', 'email', 'note']);
+            $table->foreignId('deal_id')->constrained('deals')->onDelete('cascade');
+            $table->enum('activity_type', ['Call', 'Meeting', 'Email', 'Presentation']);
             $table->text('activity_description')->nullable();
+            $table->timestamp('date')->nullable();
+            $table->enum('status', ['completed', 'pending', 'scheduled'])->nullable()->default('pending');
+            $table->enum('priority', ['low', 'medium', 'high'])->nullable()->default('low');
+            $table->string('location', 255)->nullable();
+            $table->string('outcome', 255)->nullable();
+            $table->text('notes')->nullable();
+            $table->timestamp('reminder')->nullable();
             $table->timestamps();
         });
     }

@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
-            $table->string('report_title');
-            $table->text('report_content')->nullable();
+            $table->string('report_title', 255)->collation('utf8mb4_unicode_ci');
+            $table->text('report_content')->nullable()->collation('utf8mb4_unicode_ci');
+            $table->string('status', 255)->nullable()->collation('utf8mb4_unicode_ci');
+            $table->integer('duration')->nullable();
             $table->timestamps();
         });
     }

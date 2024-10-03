@@ -19,10 +19,15 @@ class CustomerFactory extends Factory
         $createdAt = $this->faker->dateTimeBetween('-30 days', 'now');
 
         return [
-            'name' => $this->faker->name(),
+            'firstname' => $this->faker->firstName(),
+            'lastname' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(),
-            'phone' => $this->faker->phoneNumber(),
-            'address' => $this->faker->address(),
+            'phone' => $this->faker->e164PhoneNumber(),
+            'city' => $this->faker->city(),
+            'stateprovince' => $this->faker->state(),
+            'streetaddress' => $this->faker->streetAddress(),
+            'zip' => $this->faker->postcode(),
+            'country' => $this->faker->country(),
             'created_at' => $createdAt,
             'updated_at' => $this->faker->dateTimeBetween($createdAt, 'now'),
         ];

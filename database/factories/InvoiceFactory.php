@@ -17,14 +17,18 @@ class InvoiceFactory extends Factory
      */
     public function definition(): array
     {
+        $customer = Customer::factory()->create() ?? Customer::factory()->create();
+        $customerCreatedAt = $customer->created_at;
+        $createdAt = $this->faker->dateTimeBetween($customerCreatedAt, 'now');
+
         return [
-            'customer_id' => Customer::inRandomOrder()->first()->id, 
+            'customer_id' => $customer->id, 
             'invoice_number' => 'INV-' . $this->faker->unique()->numerify('###-###-###'),
             'total_amount' => $this->faker->randomFloat(2, 1000, 100000), 
             'due_date' => $this->faker->dateTimeBetween('now', '+1 month'), 
             'status' => $this->faker->randomElement(['unpaid', 'paid', 'overdue']),
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $createdAt,
+            'updated_at' => $this->faker->dateTimeBetween($createdAt, 'now'),
         ];
     }
 }

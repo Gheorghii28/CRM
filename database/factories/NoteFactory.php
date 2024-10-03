@@ -19,15 +19,39 @@ class NoteFactory extends Factory
      */
     public function definition(): array
     {
-        $createdAt = $this->faker->dateTimeBetween('-30 days', 'now');
+        $user = User::inRandomOrder()->first() ?? User::factory()->create();
+        $deal = Deal::inRandomOrder()->first() ?? Deal::factory()->create();
+        $dealCreatedAt = $deal->created_at;
+        $createdAt = $this->faker->dateTimeBetween($dealCreatedAt, 'now');
 
         return [
-            'user_id' => User::inRandomOrder()->first()->id,  
-            'customer_id' => Customer::inRandomOrder()->first()->id,  
-            'deal_id' => Deal::factory(), 
-            'note_content' => $this->faker->paragraph(),  
-            'created_at' => $createdAt,  
-            'updated_at' => $createdAt,  
+            'user_id' => $user->id,  
+            'deal_id' => $deal->id, 
+            'customer_id' => $deal->customer_id,  
+            'note_content' => $this->generateRealisticNote(),  
+            'created_at' => $createdAt,
+            'updated_at' => $this->faker->dateTimeBetween($createdAt, 'now'),
         ];
+    }
+
+    /**
+     * Generate a realistic note content.
+     *
+     * @return string
+     */
+    protected function generateRealisticNote(): string
+    {
+        $noteContents = [
+            "Follow up with the client regarding the last proposal.",
+            "Discuss the terms of the deal with the sales team.",
+            "Client expressed concerns about the pricing.",
+            "Schedule a meeting for next week to finalize the details.",
+            "Review the contract terms before sending it to the client.",
+            "Client is interested in additional services, need to prepare an offer.",
+            "Prepare a presentation for the upcoming meeting with the client.",
+            "Client's feedback was positive, proceed with the next steps."
+        ];
+
+        return $this->faker->randomElement($noteContents);
     }
 }

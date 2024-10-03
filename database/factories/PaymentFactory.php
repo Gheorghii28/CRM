@@ -18,13 +18,20 @@ class PaymentFactory extends Factory
      */
     public function definition(): array
     {
+        $invoice = Invoice::inRandomOrder()->first() ?? Invoice::factory()->create();
+        $invoiceCreatedAt = $invoice->created_at;
+        $createdAt = $this->faker->dateTimeBetween($invoiceCreatedAt, 'now');
+        $paymentDate = $this->faker->dateTimeBetween($createdAt, 'now');
+
         return [
-            'customer_id' => Customer::inRandomOrder()->first()->id,
-            'invoice_id' => Invoice::factory(),  
+            'invoice_id' => $invoice->id,  
+            'customer_id' => $invoice->customer_id,
             'amount' => $this->faker->randomFloat(2, 1000, 100000),  
-            'payment_date' => $this->faker->dateTimeBetween('-1 year', 'now'),  
+            'payment_date' => $paymentDate,  
             'payment_method' => $this->faker->randomElement(['Credit Card', 'Bank Transfer', 'PayPal']),  
             'status' => $this->faker->randomElement(['pending', 'completed', 'failed']),  
+            'created_at' => $createdAt,
+            'updated_at' => $this->faker->dateTimeBetween($createdAt, 'now'),
         ];
     }
 }

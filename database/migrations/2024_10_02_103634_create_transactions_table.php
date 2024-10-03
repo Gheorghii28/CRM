@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contacts', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
-            $table->string('contact_name')->nullable();
-            $table->string('contact_email')->nullable();
-            $table->string('contact_phone')->nullable();
-            $table->string('job_title')->nullable();
-            $table->string('company')->nullable(); 
+            $table->enum('transaction_type', ['payment', 'refund', 'chargeback'])->nullable();
+            $table->date('transaction_date')->nullable();
+            $table->decimal('amount', 15, 2)->nullable();
+            $table->string('description', 255)->nullable()->collation('utf8mb4_general_ci');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contacts');
+        Schema::dropIfExists('transactions');
     }
 };
