@@ -23,7 +23,11 @@
                     <div class="mt-4">{{ __('messages.email_address') }}</div>
                     <p class="text-base font-semibold leading-none text-gray-900 dark:text-white">{{ $customer['email'] }}</p>
                     <div class="mt-4">{{ __('messages.home_address') }}</div>
-                    <p class="text-base font-semibold leading-none text-gray-900 dark:text-white">{{ $customer['streetaddress'] }}, {{ $customer['city'] }} {{ $customer['zip'] }}, {{ $customer['stateprovince'] }}, {{ $customer['country'] }}</p>
+                    @php
+                        $countries = \App\Helpers\CountryHelper::getCountries();
+                        $countryName = array_search($customer['country'], $countries) ?: $customer['country']; 
+                    @endphp
+                    <p class="text-base font-semibold leading-none text-gray-900 dark:text-white">{{ $customer['streetaddress'] }}, {{ $customer['city'] }} {{ $customer['zip'] }}, {{ $customer['stateprovince'] }}, {{ $countryName }}</p>
                     <div class="mt-4">{{ __('messages.phone_number') }}</div>
                     <p class="text-base font-semibold leading-none text-gray-900 dark:text-white">{{ $customer['phone'] }}</p>
                     <div class="mt-4">{{ __('messages.account_created_on') }}</div>

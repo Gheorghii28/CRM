@@ -36,11 +36,15 @@
                     'entityType' => 'customer',
                     'entityName' => $customer['firstname'] . ' ' . $customer['lastname']
                 ])
+                @php
+                    $countries = \App\Helpers\CountryHelper::getCountries();
+                    $countryName = array_search($customer['country'], $countries) ?: $customer['country']; 
+                @endphp
                 <tr class="border-b dark:border-gray-700">
                     <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $customer['firstname'] }} {{ $customer['lastname'] }}</th>
                     <td class="px-4 py-3">{{ $customer['email'] }}</td>
                     <td class="px-4 py-3">{{ $customer['phone'] }}</td>
-                    <td class="px-4 py-3">{{ $customer['streetaddress'] }}, {{ $customer['city'] }} {{ $customer['zip'] }}, {{ $customer['stateprovince'] }}, {{ $customer['country'] }}</td>
+                    <td class="px-4 py-3">{{ $customer['streetaddress'] }}, {{ $customer['city'] }} {{ $customer['zip'] }}, {{ $customer['stateprovince'] }}, {{ $countryName }}</td>
                     <td class="px-4 py-3">{{ $customer['created_at']->format('d F Y') }}</td>
                     <td class="px-4 py-3 flex items-center justify-end">
                         <button id="dropdown-button-{{ $customer['id'] }}" data-dropdown-toggle="dropdown-{{ $customer['id'] }}" value="{{ $customer['id'] }}" class="open_more inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
