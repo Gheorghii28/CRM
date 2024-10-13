@@ -2,6 +2,7 @@
 
 @section('content')
 
+@include('components/alert-message')
 <div class="min-w-52 w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6 mb-4">
     
     <div class="flex justify-between">

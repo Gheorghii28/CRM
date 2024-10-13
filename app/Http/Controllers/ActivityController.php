@@ -51,7 +51,7 @@ class ActivityController extends Controller
             $activity = Activity::create($validated);
             
             return redirect()->route('activities.index')
-                ->with('success', `Activity created successfully.`);
+                ->with('success', "Activity created successfully.");
         } catch (\Exception $e) {
         
             return redirect()->route('activities.index')
@@ -92,7 +92,7 @@ class ActivityController extends Controller
             : route('activities.index');
     
             return redirect($redirectRoute)
-            ->with('success', `Activity updated successfully.`);        
+            ->with('success', "Activity updated successfully.");        
         } catch (\Exception $e) {
             return redirect()->route('activities.index')
                 ->withErrors(['error' => 'Failed to update activity: ' . $e->getMessage()]);
@@ -161,10 +161,10 @@ class ActivityController extends Controller
         return $request->validate([
             'user_id' => 'required|exists:users,id',
             'customer_id' => 'required|exists:customers,id',
-            'activity_type' => 'required|max:255',
+            'activity_type' => 'required|in:Call,Meeting,Email,Presentation',
             'activity_description' => 'nullable|max:1000',
             'date' => 'required|date',
-            'status' => 'required|in:planned,completed,canceled',
+            'status' => 'required|in:completed,pending,scheduled',
             'priority' => 'required|in:low,medium,high',
             'deal_id' => 'nullable|exists:deals,id',
             'location' => 'nullable|max:255',

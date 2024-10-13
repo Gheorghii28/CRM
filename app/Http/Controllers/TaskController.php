@@ -44,7 +44,7 @@ class TaskController extends Controller
         try {
             $task = Task::create($validated);
 
-            return redirect()->back()->with('success', `Task "{$task->title}" created successfully.`);
+            return redirect()->back()->with('success', "Task `{$task->title}` created successfully.");
 
         } catch (\Exception $e) {
             return redirect()->back()->with(['error' => 'Failed to create task. Please try again: ' . $e->getMessage()]);
@@ -70,7 +70,7 @@ class TaskController extends Controller
             $task = Task::findOrFail($id);
             $task->update($validated);
 
-            return redirect()->back()->with('success', `Task "{$task->title}" updated successfully.`);     
+            return redirect()->back()->with('success', "Task `{$task->title}` updated successfully.");     
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withErrors(['error' => 'Failed to update task: ' . $e->getMessage()]);
@@ -86,7 +86,7 @@ class TaskController extends Controller
             $task = Task::findOrFail($id);
             $task->delete();
             
-            return redirect()->back()->with('success', `Task "{$task->title}" deleted successfully.`); 
+            return redirect()->back()->with('success', "Task `{$task->title}` deleted successfully."); 
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withErrors(['error' => 'Failed to delete task: ' . $e->getMessage()]);
