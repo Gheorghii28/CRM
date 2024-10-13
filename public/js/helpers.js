@@ -46,7 +46,11 @@ function populateFormFields(formType, fieldValues) {
 
     for (const [selector, fieldName] of Object.entries(formConfig)) {
         const value = fieldValues[fieldName] || '';
-        $(selector).val(value);
+        if ($(selector).is('select')) {
+            $(selector).val(value).change();
+        } else {
+            $(selector).val(value);
+        }
     }
 }
 

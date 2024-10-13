@@ -37,10 +37,10 @@
             <div>
                 <label for="activity_type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('messages.activity_type') }}</label>
                 <select id="activity_type" name="activity_type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                    <option value="call" selected="">{{ __('messages.call') }}</option>
-                    <option value="email">{{ __('messages.email') }}</option>
-                    <option value="meeting">{{ __('messages.meeting') }}</option>
-                    <option value="presentation">{{ __('messages.presentation') }}</option>
+                    <option value="Call" selected="">{{ __('messages.call') }}</option>
+                    <option value="Email">{{ __('messages.email') }}</option>
+                    <option value="Meeting">{{ __('messages.meeting') }}</option>
+                    <option value="Presentation">{{ __('messages.presentation') }}</option>
                 </select>
             </div>
             <div>
@@ -54,9 +54,9 @@
             <div>
                 <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ __('messages.status') }}</label>
                 <select id="status" name="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                    <option value="planned" selected>{{ __('messages.planned') }}</option>
+                    <option value="pending" selected>{{ __('messages.pending') }}</option>
                     <option value="completed">{{ __('messages.completed') }}</option>
-                    <option value="canceled">{{ __('messages.canceled') }}</option>
+                    <option value="scheduled">{{ __('messages.scheduled') }}</option>
                 </select>
             </div>
             <div>
