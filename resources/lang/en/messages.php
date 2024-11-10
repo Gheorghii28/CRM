@@ -241,4 +241,7 @@ return [
     'reset_password' => 'Reset Password',
 
     'save' => 'Save',
+
+    'view_pdf' => 'View PDF',
+    'download_pdf' => 'Download PDF',
 ];

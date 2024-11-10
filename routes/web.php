@@ -3,6 +3,7 @@
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InboxController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -41,6 +42,8 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
 
 Route::prefix('customers')->name('customers.')->group(function () {
     Route::get('/', [CustomerController::class,'index'])->name('index');
+    Route::get('/view-pdf', [PDFController::class,'generateCustomersPDFForViewing'])->name('view-pdf');
+    Route::get('/download-pdf', [PDFController::class,'generateCustomersPDFForDownload'])->name('download-pdf');
     Route::get('/search', [CustomerController::class,'search'])->name('search');
     Route::get('/{customerId}/get', [CustomerController::class,'getCustomer'])->name('get-customer');
     Route::post('/', [CustomerController::class,'store'])->name('store');
@@ -54,6 +57,8 @@ Route::prefix('activities')->name('activities.')->group(function () {
     Route::get('/search', [ActivityController::class,'search'])->name('search');
     Route::get('/{activityId}/show-details', [ActivityController::class,'showDetails'])->name('show-details');
     Route::get('/{activityId}/get', [ActivityController::class,'getActivity'])->name('get-activity');
+    Route::get('/{activityId}/view-pdf', [PDFController::class,'generateActivityPDFForViewing'])->name('view-pdf');
+    Route::get('/{activityId}/download-pdf', [PDFController::class,'generateActivityPDFForDownload'])->name('download-pdf');
     Route::get('/{year}/{month}', [ActivityController::class,'getActivitiesForMonth'])->name('calendar');
     Route::post('/', [ActivityController::class,'store'])->name('store');
     Route::put('/{activityId}', [ActivityController::class,'update'])->name('update');

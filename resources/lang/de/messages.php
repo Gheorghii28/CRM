@@ -241,4 +241,7 @@ return [
     'reset_password' => 'Passwort zurücksetzen',
 
     'save' => 'Speichern',
+
+    'view_pdf' => 'PDF ansehen',
+    'download_pdf' => 'PDF herunterladen',
 ];
