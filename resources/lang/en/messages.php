@@ -244,4 +244,5 @@ return [
 
     'view_pdf' => 'View PDF',
     'download_pdf' => 'Download PDF',
+    'guest_login' => 'Continue as Guest',
 ];

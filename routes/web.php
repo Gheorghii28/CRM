@@ -21,6 +21,7 @@ use App\Http\Controllers\LanguageController;
 |
 */
 
+Route::get('/login/guest', [App\Http\Controllers\Auth\GuestLoginController::class, 'login'])->name('guest.login');
 Route::get('/', function () {
     return view('welcome');
 });
